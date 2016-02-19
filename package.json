@@ -1,0 +1,33 @@
+{
+  "name": "picker",
+  "version": "0.0.1",
+  "description": "h5 picker inspired by ios UIPickerView",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ustbhuangyi/picker.git"
+  },
+  "keywords": [
+    "h5",
+    "picker",
+    "UIPickerView"
+  ],
+  "author": "ustbhuangyi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ustbhuangyi/picker/issues"
+  },
+  "homepage": "https://github.com/ustbhuangyi/picker",
+  "devDependencies": {
+    "webpack": "^1.12.11",
+    "css-loader": "^0.23.1",
+    "style-loader": "^0.13.0",
+    "stylus-loader": "^1.4.3",
+    "html-loader": "^0.4.0",
+    "url-loader": "^0.5.7",
+    "callback-loader": "^0.2.4"
+  }
+}
