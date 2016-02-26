@@ -1,0 +1,9 @@
+gradient-from-bottom($from, $to)
+  background: -moz-linear-gradient(bottom, $from, $to)
+  background: -webkit-gradient(linear, left bottom, left top, from($from), to($to))
+  background: -o-linear-gradient(bottom, $from, $to)
+
+gradient-from-top($from, $to)
+  background: -moz-linear-gradient(top, $from, $to)
+  background: -webkit-gradient(linear, left top, left bottom, from($from), to($to))
+  background: -o-linear-gradient(top, $from, $to)

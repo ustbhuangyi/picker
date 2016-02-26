@@ -1,0 +1,67 @@
+@import "../util/mixin.styl"
+
+.picker
+  display: none
+  position: fixed
+  top: 0
+  width: 100%
+  height: 100%
+  overflow: hidden
+  text-align: center
+  background: rgba(0, 0, 0, 0)
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
+  font-size: 14px
+  transition: all 0.5s
+  -webkit-transition: all 0.5s
+  &.show
+    background: rgba(0, 0, 0, 0.6)
+  .panel
+    position: absolute
+    bottom: 0
+    width: 100%
+    height: 222px
+    background: #fff
+    transform: translateY(222px)
+    -webkit-transform: translateY(222px)
+    transition: all 0.5s
+    -webkit-transition: all 0.5s
+    &.show
+      transform: translateY(0)
+      -webkit-transform: translateY(0)
+    .choose
+      position: relative
+      height: 35px
+      color: #878787
+      font-size: 14px
+      .confirm, .cancel
+        position: absolute
+        padding: 10px
+        top: 6px
+      .confirm
+        left: 0
+      .cancel
+        right: 0
+  .wheel
+    position: relative
+    height: 173px
+    overflow: hidden
+    font-size: 21px
+    .mask-top, .mask-bottom
+      position: absolute
+      width: 100%
+      height: 68px
+      z-index: 10
+    .mask-top
+      top: 0
+      border-bottom: 1px solid #ccc
+      gradient-from-bottom(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
+    .mask-bottom
+      bottom: 0
+      border-top: 1px solid #ccc
+      gradient-from-top(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
+    .wheel-scroll
+      margin-top: 68px
+      line-height: 36px
+      .wheel-item
+        height: 36px
+

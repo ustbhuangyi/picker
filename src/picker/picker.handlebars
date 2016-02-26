@@ -1,0 +1,17 @@
+<div class="picker">
+  <div class="panel panel-hook">
+    <div class="choose">
+      <span class="cancel cancel-hook">取消</span>
+      <span class="confirm confirm-hook">确定</span>
+    </div>
+    <div class="wheel wheel-hook">
+      <div class="mask-top"></div>
+      <div class="mask-bottom"></div>
+      <ul class="wheel-scroll">
+        {{#each this}}
+          <li class="wheel-item" data-val="{{value}}">{{text}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

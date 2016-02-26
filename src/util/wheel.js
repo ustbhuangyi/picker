@@ -9,13 +9,14 @@ var TOUCH_EVENT = 1;
 	function Wheel(el, options) {
 		this.wrapper = typeof el === 'string' ? document.querySelector(el) : el;
 		this.scroller = this.wrapper.querySelector('.wheel-scroll');
-		this.items = this.wrapper.querySelector('.wheel-item');
+		this.items = this.wrapper.querySelectorAll('.wheel-item');
 		this.itemLen = this.items.length;
 
 		this.scrollerStyle = this.scroller.style;
 
 		this.options = {
 			startY: 0,
+			rotate: 25,
 			swipeTime: 3000,
 			bounceTime: 600,
 			adjustTime: 300,
@@ -139,7 +140,7 @@ var TOUCH_EVENT = 1;
 			var timestamp = +new Date;
 
 			// We need to move at least 10 pixels for the scrolling to initiate
-			if (timestamp - this.endTime > 300 && (absDistY < 10))
+			if (timestamp - this.endTime > 200 && (absDistY < 10))
 				return;
 
 			var newY = this.y + deltaY;
@@ -156,10 +157,10 @@ var TOUCH_EVENT = 1;
 
 			this._translate(newY);
 
-			if (timestamp - this.startTime > 300) {
-				this.startTime = timestamp;
-				this.startY = this.y;
-			}
+			//if (timestamp - this.startTime > 300) {
+			//	//this.startTime = timestamp;
+			//	this.startY = this.y;
+			//}
 
 			if (this.pointY < 10 || this.pointY > document.documentElement.clientHeight - 10) {
 				this._end(e);
@@ -171,7 +172,6 @@ var TOUCH_EVENT = 1;
 			this.initiated = false;
 
 			e.preventDefault();
-
 			// reset if we are outside of the boundaries
 			if (this.resetPosition(this.options.bounceTime, _.ease.bounce)) {
 				return;
@@ -211,8 +211,9 @@ var TOUCH_EVENT = 1;
 			var time = 0;
 			var easing = _.ease.swipe;
 			// start momentum animation if needed
-			if (duration < 300) {
-				var momentumY = _.momentum(this.y, this.startY, duration, this.maxScrollY,  this.wrapperHeight , this.options);
+			if (duration < 200) {
+				var momentumY = _.momentum(this.y, this.startY, duration, this.maxScrollY, this.wrapperHeight, this.options);
+
 				newY = momentumY.destination;
 				time = momentumY.duration;
 				this.isInTransition = true;
@@ -256,12 +257,22 @@ var TOUCH_EVENT = 1;
 
 			this.scrollerStyle[_.style.transitionDuration] = time + 'ms';
 
+			for (var i = 0; i < this.itemLen; i++) {
+				this.items[i].style[_.style.transitionDuration] = time + 'ms';
+			}
+
 			if (!time && _.isBadAndroid) {
 				this.scrollerStyle[_.style.transitionDuration] = '0.001s';
+				for (var i = 0; i < this.itemLen; i++) {
+					this.items[i].style[_.style.transitionDuration] = '0.001s';
+				}
 			}
 		},
 		_transitionTimingFunction: function (easing) {
 			this.scrollerStyle[_.style.transitionTimingFunction] = easing;
+			for (var i = 0; i < this.itemLen; i++) {
+				this.items[i].style[_.style.transitionTimingFunction] = easing;
+			}
 		},
 		_transitionEnd: function (e) {
 			if (e.target !== this.scroller || !this.isInTransition) {
@@ -275,7 +286,13 @@ var TOUCH_EVENT = 1;
 			}
 		},
 		_translate: function (y) {
-			this.scrollerStyle[_.style.transform] = 'translate(' + y + 'px)' + this.translateZ;
+			this.scrollerStyle[_.style.transform] = 'translateY(' + y + 'px)' + this.translateZ;
+
+			for (var i = 0; i < this.itemLen; i++) {
+				var deg = this.options.rotate * (y / this.itemHeight + i);
+				this.items[i].style[_.style.transform] = 'rotateX(' + deg + 'deg)';
+			}
+
 
 			this.y = y;
 		},
@@ -314,7 +331,7 @@ var TOUCH_EVENT = 1;
 
 			//this.scrollerHeight = parseInt(this.scroller.style.height) || this.scroller.clientHeight;
 
-			this.itemHeight = this.items[0].clientHeight;
+			this.options.itemHeight = this.itemHeight = this.items[0].clientHeight;
 
 			this.maxScrollY = -this.itemHeight * (this.itemLen - 1);
 
@@ -400,6 +417,8 @@ var TOUCH_EVENT = 1;
 					break;
 			}
 		}
-	}
+	};
+
+	module.exports = Wheel;
 
 })(window, document, Math);
