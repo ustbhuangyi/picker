@@ -157,10 +157,10 @@ var TOUCH_EVENT = 1;
 
 			this._translate(newY);
 
-			//if (timestamp - this.startTime > 300) {
-			//	//this.startTime = timestamp;
-			//	this.startY = this.y;
-			//}
+			if (timestamp - this.startTime > 300) {
+				this.startTime = timestamp;
+				this.startY = this.y;
+			}
 
 			if (this.pointY < 10 || this.pointY > document.documentElement.clientHeight - 10) {
 				this._end(e);
