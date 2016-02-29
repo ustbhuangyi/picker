@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('./util');
-//var log = require('./log');
 
 var TOUCH_EVENT = 1;
 

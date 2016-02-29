@@ -52,10 +52,6 @@ require('./picker.styl');
 				me.hide();
 			});
 
-			this.$wheel.on('wheelTap', function (e) {
-				console.log(e.target);
-			})
-
 		},
 		show: function () {
 			this.$picker.show();
