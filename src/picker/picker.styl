@@ -8,15 +8,22 @@
   height: 100%
   overflow: hidden
   text-align: center
-  background: rgba(0, 0, 0, 0)
   font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
   font-size: 14px
-  transition: all 0.5s
-  -webkit-transition: all 0.5s
-  &.show
-    background: rgba(0, 0, 0, 0.6)
+  unselectable()
+  .mask
+    position: absolute
+    z-index: 500
+    width: 100%
+    height: 100%
+    transition: all 0.5s
+    -webkit-transition: all 0.5s
+    background: rgba(0, 0, 0, 0)
+    &.show
+      background: rgba(0, 0, 0, 0.6)
   .panel
     position: absolute
+    z-index: 600
     bottom: 0
     width: 100%
     height: 222px
@@ -38,9 +45,10 @@
         padding: 10px
         top: 6px
       .confirm
-        left: 0
-      .cancel
         right: 0
+        color: #fa8919
+      .cancel
+        left: 0
   .wheel
     position: relative
     height: 173px
@@ -48,9 +56,10 @@
     font-size: 21px
     .mask-top, .mask-bottom
       position: absolute
+      z-index: 10
       width: 100%
       height: 68px
-      z-index: 10
+      pointer-events: none
     .mask-top
       top: 0
       border-bottom: 1px solid #ccc

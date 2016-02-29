@@ -50,28 +50,6 @@ _.removeEvent = function (el, type, fn, capture) {
 	el.removeEventListener(type, fn, !!capture);
 };
 
-_.hasClass = function (el, className) {
-	var reg = new RegExp('(^|\\s)' + className + '(\\s|$)');
-	return reg.test(el.className);
-};
-
-_.addClass = function (el, className) {
-	if (_.hasClass(el, className))
-		return;
-
-	var newClass = el.className.split(' ');
-	newClass.push(className);
-	el.className = newClass.join(' ');
-};
-
-_.removeClass = function (el, className) {
-	if (!_.hasClass(el, className))
-		return;
-
-	var reg = new RegExp('(^|\\s)' + className + '(\\s|$)', 'g');
-	el.className = el.className.replace(reg, ' ');
-};
-
 _.offset = function (el) {
 	var left = 0;
 	var top = 0;
@@ -88,43 +66,12 @@ _.offset = function (el) {
 	};
 };
 
-_.tap = function (e, eventName) {
-	var ev = document.createEvent('Event');
-	ev.initEvent(eventName, true, true);
-	ev.pageX = e.pageX;
-	ev.pageY = e.pageY;
-	e.target.dispatchEvent(ev);
-};
-
-_.click = function (e) {
-	var target = e.target;
-
-	if (!(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName)) {
-		var ev = new MouseEvent('click', {
-			bubbles: true,
-			cancelable: true,
-			view: e.view,
-			screenX: target.screenX,
-			screenY: target.screenY,
-			clientX: target.clientX,
-			clientY: target.clientY,
-			ctrlKey: e.ctrlKey,
-			altKey: e.altKey,
-			shiftKey: e.shiftKey,
-			metaKey: e.metaKey
-		});
-		e._constructed = true;
-		target.dispatchEvent(ev);
-	}
-
-};
-
 _.momentum = function (current, start, time, lowerMargin, wrapperSize, options) {
 	var distance = current - start;
 	var speed = Math.abs(distance) / time;
 
-	var deceleration = options.deceleration || 0.001;
-	var duration = options.swipeTime || 2500;
+	var deceleration = options.deceleration;
+	var duration = options.swipeTime;
 
 	var destination = current + speed / deceleration * ( distance < 0 ? -1 : 1 );
 
@@ -149,7 +96,6 @@ _.momentum = function (current, start, time, lowerMargin, wrapperSize, options) 
 _.isBadAndroid = /Android /.test(window.navigator.appVersion) && !(/Chrome\/\d/.test(window.navigator.appVersion));
 
 var transform = prefixStyle('transform');
-
 
 _.extend(_, {
 	hasTransform: transform !== false,

@@ -1,3 +1,6 @@
+
+FastClick.attach(document.body);
+
 var $name = $('#name');
 
 var data = [
@@ -51,7 +54,14 @@ var data = [
 	}
 ];
 
-$name.picker({
-	data: data
-}).picker('show');
+$name.on('click', function () {
+	$(this).picker({
+		data: data
+	}).picker('show')
+		.on('select', function (e, data) {
+			$(this).text(data.text);
+		});
+});
+
+
 

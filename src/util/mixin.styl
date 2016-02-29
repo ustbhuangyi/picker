@@ -7,3 +7,9 @@ gradient-from-top($from, $to)
   background: -moz-linear-gradient(top, $from, $to)
   background: -webkit-gradient(linear, left top, left bottom, from($from), to($to))
   background: -o-linear-gradient(top, $from, $to)
+
+unselectable()
+  -moz-user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+  user-select: none
