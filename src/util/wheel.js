@@ -18,7 +18,7 @@ var TOUCH_EVENT = 1;
 			rotate: 25,
 			swipeTime: 2500,
 			bounceTime: 600,
-			adjustTime: 400,
+			adjustTime: 300,
 			swipeBounceTime: 1200,
 			resizePolling: 60,
 			deceleration: 0.001,

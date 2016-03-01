@@ -78,11 +78,11 @@ _.momentum = function (current, start, time, lowerMargin, wrapperSize, options) 
 	destination = Math.round(destination / options.itemHeight) * options.itemHeight;
 
 	if (destination < lowerMargin) {
-		destination = wrapperSize ? lowerMargin - ( wrapperSize / 2.5 * ( speed / 8 ) ) : lowerMargin;
-		duration = (options.swipeBounceTime || 1000) - (options.bounceTime || 400);
+		destination = wrapperSize ? lowerMargin - ( wrapperSize / 4 * speed ) : lowerMargin;
+		duration = options.swipeBounceTime - options.bounceTime;
 	} else if (destination > 0) {
-		destination = wrapperSize ? wrapperSize / 2.5 * ( speed / 8 ) : 0;
-		duration = (options.swipeBounceTime || 1000) - (options.bounceTime || 400);
+		destination = wrapperSize ? wrapperSize / 4 * speed : 0;
+		duration = options.swipeBounceTime - options.bounceTime;
 	}
 
 	return {
