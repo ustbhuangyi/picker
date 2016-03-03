@@ -1416,8 +1416,8 @@
 				selectedIndex: 0,
 				rotate: 25,
 				swipeTime: 2500,
-				bounceTime: 600,
-				adjustTime: 300,
+				bounceTime: 700,
+				adjustTime: 400,
 				swipeBounceTime: 1200,
 				resizePolling: 60,
 				deceleration: 0.001,
@@ -1862,11 +1862,11 @@
 	var vendor = (function () {
 	
 		var transformNames = {
-			standard: 'transform',
 			webkit: 'webkitTransform',
 			Moz: 'MozTransform',
 			O: 'OTransform',
-			ms: 'msTransform'
+			ms: 'msTransform',
+			standard: 'transform'
 		};
 	
 		for (var key in transformNames) {
