@@ -20,11 +20,18 @@ require('./picker.styl');
 			this.$confirm = $('.confirm-hook', this.$picker);
 			this.$cancel = $('.cancel-hook', this.$picker);
 			this.$choose = $('.choose-hook', this.$picker);
+			this.$wrapper = $('.wheel-wrapper-hook', this.$picker);
+			this.$footer = $('.footer-hook', this.$picker);
 
 			this._bindEvent();
 		},
 		_init: function () {
-			this.selectedIndex = 0;
+			this.length = this._options.data.length;
+
+			this.selectedIndex = [];
+			for (var i = 0; i < this.length; i++) {
+				this.selectedIndex[i] = 0;
+			}
 		},
 		_bindEvent: function () {
 			var me = this;
@@ -41,11 +48,22 @@ require('./picker.styl');
 				return false;
 			});
 
+			this.$wrapper.on('touchstart', function () {
+				return false;
+			});
+
+			this.$footer.on('touchstart', function () {
+				return false;
+			});
+
 			this.$confirm.on('click', function () {
 				me.hide();
 
-				me.selectedIndex = me.wheel.getSelectedIndex();
-				me.trigger('select', me._options.data[me.selectedIndex]);
+				for (var i = 0; i < me.length; i++) {
+					me.selectedIndex[i] = me.wheels[i].getSelectedIndex();
+				}
+
+				me.trigger('select', me.selectedIndex);
 			});
 
 			this.$cancel.on('click', function () {
@@ -61,13 +79,18 @@ require('./picker.styl');
 				this.$mask.addClass(showCls);
 				this.$panel.addClass(showCls);
 
-				if (!this.wheel) {
-					this.wheel = new Wheel(this.$wheel[0], {
-						tap: 'wheelTap',
-						selectedIndex: this.selectedIndex
-					});
+				if (!this.wheels) {
+					this.wheels = [];
+					for (var i = 0; i < this.length; i++) {
+						this.wheels[i] = new Wheel(this.$wheel[i], {
+							tap: 'wheelTap',
+							selectedIndex: this.selectedIndex[i]
+						});
+					}
 				} else {
-					this.wheel.goTo(this.selectedIndex);
+					for (var i = 0; i < this.length; i++) {
+						this.wheels[i].goTo(this.selectedIndex[i]);
+					}
 				}
 
 			}.bind(this), 0);

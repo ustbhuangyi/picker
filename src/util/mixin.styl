@@ -13,3 +13,49 @@ unselectable()
   -webkit-user-select: none
   -ms-user-select: none
   user-select: none
+
+flex-box()
+  display: -ms-flexbox
+  display: -webkit-box
+  display: -webkit-flex
+  display: flex
+
+flex()
+  -ms-flex: 1 1 0.000000001px
+  -webkit-box-flex: 1
+  -webkit-flex: 1
+  flex: 1
+  -webkit-flex-basis: 0.000000001px
+  flex-basis: 0.000000001px
+
+border-top-1px($color)
+  &:before, &:after
+    display: block
+    position: absolute
+    border-top: 1px solid $color
+    left: 0
+    width: 100%
+    content: ' '
+  &:before
+    display: block
+    top: 0
+  &:after
+    display: none
+    bottom: 0
+
+border-bottom-1px($color)
+  &:before, &:after
+    display: block
+    position: absolute
+    border-top: 1px solid $color
+    left: 0
+    width: 100%
+    content: ' '
+  &:before
+    display: none
+    top: 0
+  &:after
+    display: block
+    bottom: 0
+
+

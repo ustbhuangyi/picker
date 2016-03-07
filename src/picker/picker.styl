@@ -11,7 +11,7 @@
   font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
   font-size: 14px
   unselectable()
-  .mask
+  .picker-mask
     position: absolute
     z-index: 500
     width: 100%
@@ -21,23 +21,23 @@
     background: rgba(0, 0, 0, 0)
     &.show
       background: rgba(0, 0, 0, 0.6)
-  .panel
+  .picker-panel
     position: absolute
     z-index: 600
     bottom: 0
     width: 100%
-    height: 222px
+    height: 243px
     background: #fff
-    transform: translateY(222px)
-    -webkit-transform: translateY(222px)
+    transform: translateY(243px)
+    -webkit-transform: translateY(243px)
     transition: all 0.5s
     -webkit-transition: all 0.5s
     &.show
       transform: translateY(0)
       -webkit-transform: translateY(0)
-    .choose
+    .picker-choose
       position: relative
-      height: 35px
+      height: 50px
       color: #878787
       font-size: 14px
       .confirm, .cancel
@@ -49,28 +49,50 @@
         color: #fa8919
       .cancel
         left: 0
-  .wheel
-    position: relative
-    height: 173px
-    overflow: hidden
-    font-size: 21px
-    .mask-top, .mask-bottom
-      position: absolute
-      z-index: 10
-      width: 100%
-      height: 68px
-      pointer-events: none
-    .mask-top
-      top: 0
-      border-bottom: 1px solid #ccc
-      gradient-from-bottom(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
-    .mask-bottom
-      bottom: 0
-      border-top: 1px solid #ccc
-      gradient-from-top(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
-    .wheel-scroll
-      margin-top: 68px
-      line-height: 36px
-      .wheel-item
-        height: 36px
+    .picker-content
+      position: relative
+      .mask-top, .mask-bottom
+        position: absolute
+        z-index: 10
+        width: 100%
+        height: 68px
+        pointer-events: none
+      .mask-top
+        border-bottom-1px(#ccc)
+        top: 0
+        gradient-from-bottom(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
+      .mask-bottom
+        border-top-1px(#ccc)
+        bottom: 0
+        gradient-from-top(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
+    .wheel-wrapper
+      flex-box()
+      padding: 0 20px
+      .wheel
+        flex()
+        height: 173px
+        overflow: hidden
+        font-size: 21px
+        .wheel-scroll
+          margin-top: 68px
+          line-height: 36px
+          .wheel-item
+            height: 36px
+  .picker-footer
+    height: 20px
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5)
+  .border-1px
+    &::after, &::before
+      -webkit-transform: scaleY(.7)
+      -webkit-transform-origin: 0 0
+      transform: scaleY(.7)
+    &::after
+      -webkit-transform-origin: left bottom
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2)
+  .border-1px
+    &::after, &::before
+      -webkit-transform: scaleY(.5)
+      transform: scaleY(.5)
 

@@ -17,7 +17,7 @@ var TOUCH_EVENT = 1;
 			selectedIndex: 0,
 			rotate: 25,
 			swipeTime: 2500,
-			bounceTime: 700,
+			bounceTime: 800,
 			adjustTime: 400,
 			swipeBounceTime: 1200,
 			resizePolling: 60,
@@ -191,6 +191,11 @@ var TOUCH_EVENT = 1;
 			// we scrolled less than 15 pixels
 			if (!this.moved) {
 				time = this.options.adjustTime;
+				if (this.target.className === 'wheel-scroll') {
+					var index = Math.abs(Math.round(newY / this.itemHeight));
+					var offset = Math.round((this.pointY + _.offset(this.target).top - this.itemHeight / 2) / this.itemHeight);
+					this.target = this.items[index + offset];
+				}
 				this.scrollToElement(this.target, time, easing);
 
 				this._trigger('scrollCancel');

@@ -1,9 +1,19 @@
-
 FastClick.attach(document.body);
 
 var $name = $('#name');
 
-var data = [
+
+var data1 = [
+	{
+		text: '小美',
+		value: 1
+	}, {
+		text: '猪猪',
+		value: 2
+	}
+];
+
+var data2 = [
 	{
 		text: '张三',
 		value: 1
@@ -54,12 +64,29 @@ var data = [
 	}
 ];
 
+var data3 = [
+	{
+		text: '开心',
+		value: 1
+	}, {
+		text: '生气',
+		value: 2
+	},
+	{
+		text: '难过',
+		value: 3
+	}, {
+		text: '搞笑',
+		value: 4
+	}
+];
+
 $name.on('click', function () {
 	$(this).picker({
-		data: data
+		data: [data1, data2, data3],
 	}).picker('show')
 		.on('select', function (e, data) {
-			$(this).text(data.text);
+			$(this).text(data1[data[0]].text + ' ' + data2[data[1]].text + ' ' + data3[data[2]].text);
 		});
 });
 
