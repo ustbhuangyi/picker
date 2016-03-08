@@ -73,10 +73,10 @@ var data3 = [
 		value: 2
 	},
 	{
-		text: '难过',
+		text: '搞笑的我呀呀YY啊',
 		value: 3
 	}, {
-		text: '搞笑',
+		text: '难过',
 		value: 4
 	}
 ];
@@ -84,9 +84,12 @@ var data3 = [
 $name.on('click', function () {
 	$(this).picker({
 		data: [data1, data2, data3],
+		title: '我们都是小学生'
 	}).picker('show')
-		.on('select', function (e, data) {
-			$(this).text(data1[data[0]].text + ' ' + data2[data[1]].text + ' ' + data3[data[2]].text);
+		.on('select', function (e, selectVal, selectIndex) {
+			$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
+		}).on('change', function (e, index) {
+			console.log(index);
 		});
 });
 

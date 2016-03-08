@@ -1,0 +1,6 @@
+{
+  "name": "picker",
+  "version": "0.0.1",
+  "main": "build/picker.js",
+  "description": "h5 picker inspired by ios UIPickerView"
+}

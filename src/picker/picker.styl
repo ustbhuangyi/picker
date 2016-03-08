@@ -38,8 +38,13 @@
     .picker-choose
       position: relative
       height: 50px
+      text-align: center
       color: #878787
       font-size: 14px
+      .picker-title
+        line-height: 50px
+        font-size: 19px
+        color: #333
       .confirm, .cancel
         position: absolute
         padding: 10px
@@ -78,6 +83,8 @@
           line-height: 36px
           .wheel-item
             height: 36px
+            overflow: hidden
+            white-space: nowrap
   .picker-footer
     height: 20px
 

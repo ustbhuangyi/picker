@@ -112,7 +112,7 @@ var TOUCH_EVENT = 1;
 				var pos = this.getComputedPosition();
 				this._translate(Math.round(pos.y));
 				this.target = this.items[Math.round(-pos.y / this.itemHeight)];
-				this._trigger('scrollEnd');
+				//this._trigger('scrollEnd');
 			}
 
 			var point = e.touches ? e.touches[0] : e;

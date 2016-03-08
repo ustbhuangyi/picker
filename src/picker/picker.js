@@ -10,10 +10,14 @@ require('./picker.styl');
 	gmu.define('picker', {
 		options: {
 			data: [],
+			title: '',
 			showCls: 'show'
 		},
 		_create: function () {
-			this.$picker = $(pickerTemplate(this._options.data)).appendTo($(document.body));
+			this.$picker = $(pickerTemplate({
+				data: this._options.data,
+				title: this._options.title
+			})).appendTo($(document.body));
 			this.$mask = $('.mask-hook', this.$picker);
 			this.$wheel = $('.wheel-hook', this.$picker);
 			this.$panel = $('.panel-hook', this.$picker);
@@ -59,11 +63,14 @@ require('./picker.styl');
 			this.$confirm.on('click', function () {
 				me.hide();
 
+				var selectVal = [];
 				for (var i = 0; i < me.length; i++) {
-					me.selectedIndex[i] = me.wheels[i].getSelectedIndex();
+					var index = me.wheels[i].getSelectedIndex();
+					me.selectedIndex[i] = index;
+					selectVal.push(me._options.data[i][index].value);
 				}
 
-				me.trigger('select', me.selectedIndex);
+				me.trigger('select', selectVal, me.selectedIndex);
 			});
 
 			this.$cancel.on('click', function () {
@@ -86,6 +93,11 @@ require('./picker.styl');
 							tap: 'wheelTap',
 							selectedIndex: this.selectedIndex[i]
 						});
+						(function (index) {
+							this.wheels[index].on('scrollEnd', function () {
+								this.trigger('change', index)
+							}.bind(this));
+						}.bind(this))(i);
 					}
 				} else {
 					for (var i = 0; i < this.length; i++) {

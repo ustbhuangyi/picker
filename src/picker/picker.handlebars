@@ -4,12 +4,13 @@
     <div class="picker-choose choose-hook">
       <span class="cancel cancel-hook">取消</span>
       <span class="confirm confirm-hook">确定</span>
+      <h1 class="picker-title">{{title}}</h1>
     </div>
     <div class="picker-content">
       <div class="mask-top border-1px"></div>
       <div class="mask-bottom border-1px"></div>
       <div class="wheel-wrapper wheel-wrapper-hook">
-        {{#each this}}
+        {{#each data}}
           <div class="wheel wheel-hook">
             <ul class="wheel-scroll">
               {{#each this}}
