@@ -1,6 +1,7 @@
 'use strict';
 
 var pickerTemplate = require('./picker.handlebars');
+var itemTemplate = require('./item.handlebars');
 var Wheel = require('../util/wheel.js');
 
 require('./picker.styl');
@@ -14,8 +15,10 @@ require('./picker.styl');
 			showCls: 'show'
 		},
 		_create: function () {
+			this.data = this._options.data;
+
 			this.$picker = $(pickerTemplate({
-				data: this._options.data,
+				data: this.data,
 				title: this._options.title
 			})).appendTo($(document.body));
 			this.$mask = $('.mask-hook', this.$picker);
@@ -25,12 +28,13 @@ require('./picker.styl');
 			this.$cancel = $('.cancel-hook', this.$picker);
 			this.$choose = $('.choose-hook', this.$picker);
 			this.$wrapper = $('.wheel-wrapper-hook', this.$picker);
+			this.$scroll = $('.wheel-scroll-hook', this.$picker);
 			this.$footer = $('.footer-hook', this.$picker);
 
 			this._bindEvent();
 		},
 		_init: function () {
-			this.length = this._options.data.length;
+			this.length = this.data.length;
 
 			this.selectedIndex = [];
 			for (var i = 0; i < this.length; i++) {
@@ -63,22 +67,23 @@ require('./picker.styl');
 			this.$confirm.on('click', function () {
 				me.hide();
 
-				var selectVal = [];
+				var selectedVal = [];
 				for (var i = 0; i < me.length; i++) {
 					var index = me.wheels[i].getSelectedIndex();
 					me.selectedIndex[i] = index;
-					selectVal.push(me._options.data[i][index].value);
+					if (me.data[i].length) {
+						selectedVal.push(me.data[i][index].value);
+					}
 				}
 
-				me.trigger('select', selectVal, me.selectedIndex);
+				me.trigger('picker.select', selectedVal, me.selectedIndex);
 			});
 
 			this.$cancel.on('click', function () {
 				me.hide();
 			});
-
 		},
-		show: function () {
+		show: function (next) {
 			this.$picker.show();
 			var showCls = this._options.showCls;
 
@@ -95,7 +100,7 @@ require('./picker.styl');
 						});
 						(function (index) {
 							this.wheels[index].on('scrollEnd', function () {
-								this.trigger('change', index)
+								this.trigger('picker.change', index, this.wheels[index].getSelectedIndex());
 							}.bind(this));
 						}.bind(this))(i);
 					}
@@ -104,7 +109,7 @@ require('./picker.styl');
 						this.wheels[i].goTo(this.selectedIndex[i]);
 					}
 				}
-
+				next && next();
 			}.bind(this), 0);
 		},
 		hide: function () {
@@ -115,6 +120,31 @@ require('./picker.styl');
 			setTimeout(function () {
 				this.$picker.hide();
 			}.bind(this), 500);
+		},
+		refill: function (data, index) {
+			var $scroll = this.$scroll.eq(index);
+			var wheel = this.wheels[index];
+			if ($scroll && wheel) {
+				var oldData = this.data[index];
+				this.data[index] = data;
+				$scroll.html(itemTemplate(data));
+
+				var selectedIndex = wheel.getSelectedIndex();
+				var dist = 0;
+				if (oldData.length) {
+					var oldValue = oldData[selectedIndex].value;
+					for (var i = 0; i < data.length; i++) {
+						if (data[i].value === oldValue) {
+							dist = i;
+							break;
+						}
+					}
+				}
+				this.selectedIndex[index] = dist;
+				wheel.refresh();
+				wheel.goTo(dist);
+				return dist;
+			}
 		}
 	});
 

@@ -17,7 +17,7 @@ var TOUCH_EVENT = 1;
 			selectedIndex: 0,
 			rotate: 25,
 			swipeTime: 2500,
-			bounceTime: 800,
+			bounceTime: 700,
 			adjustTime: 400,
 			swipeBounceTime: 1200,
 			resizePolling: 60,
@@ -31,9 +31,6 @@ var TOUCH_EVENT = 1;
 		//if (this.options.tap === true) {
 		//	this.options.tap = 'tap';
 		//}
-
-		this.options.itemHeight = this.itemHeight = this.items[0].clientHeight;
-
 		this.translateZ = _.hasPerspective ? ' translateZ(0)' : '';
 
 		this._init();
@@ -48,8 +45,6 @@ var TOUCH_EVENT = 1;
 
 	Wheel.prototype = {
 		_init: function () {
-			this.selectedIndex = this.options.selectedIndex;
-			this.y = -this.selectedIndex * this.itemHeight;
 			this._events = {};
 
 			this._addEvents();
@@ -325,7 +320,13 @@ var TOUCH_EVENT = 1;
 
 			this.wrapperHeight = parseInt(this.wrapper.style.height) || this.wrapper.clientHeight;
 
+			this.items = this.wrapper.querySelectorAll('.wheel-item');
 			//this.scrollerHeight = parseInt(this.scroller.style.height) || this.scroller.clientHeight;
+			this.options.itemHeight = this.itemHeight = this.items.length ? this.items[0].clientHeight : 0;
+
+			this.selectedIndex = this.options.selectedIndex;
+			this.y = -this.selectedIndex * this.itemHeight;
+
 			this.itemLen = this.items.length;
 
 			this.maxScrollY = -this.itemHeight * (this.itemLen - 1);
