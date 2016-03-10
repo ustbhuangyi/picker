@@ -8,8 +8,8 @@
   height: 100%
   overflow: hidden
   text-align: center
-  //font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
-  font-family: arial, 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', sans-serif, 'Droid Sans Fallback'
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
+  //font-family: arial, 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', sans-serif, 'Droid Sans Fallback'
   font-size: 14px
   unselectable()
   .picker-mask
@@ -39,12 +39,12 @@
     .picker-choose
       position: relative
       height: 50px
-      text-align: center
       color: #878787
       font-size: 14px
       .picker-title
         line-height: 50px
         font-size: 19px
+        text-align: center
         color: #333
       .confirm, .cancel
         position: absolute
@@ -73,7 +73,7 @@
         gradient-from-top(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8))
     .wheel-wrapper
       flex-box()
-      padding: 0 20px
+      padding: 0 10px
       .wheel
         flex()
         height: 173px
@@ -86,6 +86,7 @@
             height: 36px
             overflow: hidden
             white-space: nowrap
+            color: #333
   .picker-footer
     height: 20px
 

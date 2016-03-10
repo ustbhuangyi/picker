@@ -50,10 +50,10 @@
 	'use strict';
 	
 	var pickerTemplate = __webpack_require__(/*! ./picker.handlebars */ 1);
-	var itemTemplate = __webpack_require__(/*! ./item.handlebars */ 27);
-	var Wheel = __webpack_require__(/*! ../util/wheel.js */ 21);
+	var itemTemplate = __webpack_require__(/*! ./item.handlebars */ 21);
+	var Wheel = __webpack_require__(/*! ../util/wheel.js */ 22);
 	
-	__webpack_require__(/*! ./picker.styl */ 23);
+	__webpack_require__(/*! ./picker.styl */ 24);
 	
 	(function (gmu, $, undefined) {
 	
@@ -1465,6 +1465,28 @@
 
 /***/ },
 /* 21 */
+/*!************************************!*\
+  !*** ./src/picker/item.handlebars ***!
+  \************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(/*! ./~/handlebars/runtime.js */ 2);
+	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+	
+	  return "  <li class=\"wheel-item\" data-val=\""
+	    + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
+	    + "\">"
+	    + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
+	    + "</li>\n";
+	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+	
+	  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+	},"useData":true});
+
+/***/ },
+/* 22 */
 /*!***************************!*\
   !*** ./src/util/wheel.js ***!
   \***************************/
@@ -1472,7 +1494,7 @@
 
 	'use strict';
 	
-	var _ = __webpack_require__(/*! ./util */ 22);
+	var _ = __webpack_require__(/*! ./util */ 23);
 	
 	var TOUCH_EVENT = 1;
 	
@@ -1924,7 +1946,7 @@
 	})(window, document, Math);
 
 /***/ },
-/* 22 */
+/* 23 */
 /*!**************************!*\
   !*** ./src/util/util.js ***!
   \**************************/
@@ -2083,7 +2105,7 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /*!********************************!*\
   !*** ./src/picker/picker.styl ***!
   \********************************/
@@ -2092,10 +2114,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(/*! !./../../~/css-loader!./../../~/stylus-loader!./picker.styl */ 24);
+	var content = __webpack_require__(/*! !./../../~/css-loader!./../../~/stylus-loader!./picker.styl */ 25);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(/*! ./../../~/style-loader/addStyles.js */ 26)(content, {});
+	var update = __webpack_require__(/*! ./../../~/style-loader/addStyles.js */ 27)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -2112,24 +2134,24 @@
 	}
 
 /***/ },
-/* 24 */
+/* 25 */
 /*!*****************************************************************!*\
   !*** ./~/css-loader!./~/stylus-loader!./src/picker/picker.styl ***!
   \*****************************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(/*! ./../../~/css-loader/lib/css-base.js */ 25)();
+	exports = module.exports = __webpack_require__(/*! ./../../~/css-loader/lib/css-base.js */ 26)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, ".picker {\n  display: none;\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  text-align: center;\n  font-family: arial, 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', sans-serif, 'Droid Sans Fallback';\n  font-size: 14px;\n  -moz-user-select: none;\n  -webkit-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.picker .picker-mask {\n  position: absolute;\n  z-index: 500;\n  width: 100%;\n  height: 100%;\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n  background: rgba(0,0,0,0);\n}\n.picker .picker-mask.show {\n  background: rgba(0,0,0,0.6);\n}\n.picker .picker-panel {\n  position: absolute;\n  z-index: 600;\n  bottom: 0;\n  width: 100%;\n  height: 243px;\n  background: #fff;\n  transform: translateY(243px);\n  -webkit-transform: translateY(243px);\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n}\n.picker .picker-panel.show {\n  transform: translateY(0);\n  -webkit-transform: translateY(0);\n}\n.picker .picker-panel .picker-choose {\n  position: relative;\n  height: 50px;\n  text-align: center;\n  color: #878787;\n  font-size: 14px;\n}\n.picker .picker-panel .picker-choose .picker-title {\n  line-height: 50px;\n  font-size: 19px;\n  color: #333;\n}\n.picker .picker-panel .picker-choose .confirm,\n.picker .picker-panel .picker-choose .cancel {\n  position: absolute;\n  padding: 10px;\n  top: 6px;\n}\n.picker .picker-panel .picker-choose .confirm {\n  right: 0;\n  color: #fa8919;\n}\n.picker .picker-panel .picker-choose .cancel {\n  left: 0;\n}\n.picker .picker-panel .picker-content {\n  position: relative;\n}\n.picker .picker-panel .picker-content .mask-top,\n.picker .picker-panel .picker-content .mask-bottom {\n  position: absolute;\n  z-index: 10;\n  width: 100%;\n  height: 68px;\n  pointer-events: none;\n}\n.picker .picker-panel .picker-content .mask-top {\n  top: 0;\n  background: -moz-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-top:before,\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-top:before {\n  display: none;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  bottom: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom {\n  bottom: 0;\n  background: -moz-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-bottom:before,\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-bottom:before {\n  display: block;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: none;\n  bottom: 0;\n}\n.picker .picker-panel .wheel-wrapper {\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: flex;\n  padding: 0 20px;\n}\n.picker .picker-panel .wheel-wrapper .wheel {\n  -ms-flex: 1 1 1e-9px;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  flex: 1;\n  -webkit-flex-basis: 1e-9px;\n  flex-basis: 1e-9px;\n  height: 173px;\n  overflow: hidden;\n  font-size: 21px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll {\n  margin-top: 68px;\n  line-height: 36px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll .wheel-item {\n  height: 36px;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.picker .picker-footer {\n  height: 20px;\n}\n@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.7);\n    -webkit-transform-origin: 0 0;\n    transform: scaleY(0.7);\n  }\n  .border-1px::after {\n    -webkit-transform-origin: left bottom;\n  }\n}\n@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.5);\n    transform: scaleY(0.5);\n  }\n}\n", ""]);
+	exports.push([module.id, ".picker {\n  display: none;\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  text-align: center;\n  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';\n  font-size: 14px;\n  -moz-user-select: none;\n  -webkit-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.picker .picker-mask {\n  position: absolute;\n  z-index: 500;\n  width: 100%;\n  height: 100%;\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n  background: rgba(0,0,0,0);\n}\n.picker .picker-mask.show {\n  background: rgba(0,0,0,0.6);\n}\n.picker .picker-panel {\n  position: absolute;\n  z-index: 600;\n  bottom: 0;\n  width: 100%;\n  height: 243px;\n  background: #fff;\n  transform: translateY(243px);\n  -webkit-transform: translateY(243px);\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n}\n.picker .picker-panel.show {\n  transform: translateY(0);\n  -webkit-transform: translateY(0);\n}\n.picker .picker-panel .picker-choose {\n  position: relative;\n  height: 50px;\n  color: #878787;\n  font-size: 14px;\n}\n.picker .picker-panel .picker-choose .picker-title {\n  line-height: 50px;\n  font-size: 19px;\n  text-align: center;\n  color: #333;\n}\n.picker .picker-panel .picker-choose .confirm,\n.picker .picker-panel .picker-choose .cancel {\n  position: absolute;\n  padding: 10px;\n  top: 6px;\n}\n.picker .picker-panel .picker-choose .confirm {\n  right: 0;\n  color: #fa8919;\n}\n.picker .picker-panel .picker-choose .cancel {\n  left: 0;\n}\n.picker .picker-panel .picker-content {\n  position: relative;\n}\n.picker .picker-panel .picker-content .mask-top,\n.picker .picker-panel .picker-content .mask-bottom {\n  position: absolute;\n  z-index: 10;\n  width: 100%;\n  height: 68px;\n  pointer-events: none;\n}\n.picker .picker-panel .picker-content .mask-top {\n  top: 0;\n  background: -moz-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-top:before,\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-top:before {\n  display: none;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  bottom: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom {\n  bottom: 0;\n  background: -moz-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-bottom:before,\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-bottom:before {\n  display: block;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: none;\n  bottom: 0;\n}\n.picker .picker-panel .wheel-wrapper {\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: flex;\n  padding: 0 10px;\n}\n.picker .picker-panel .wheel-wrapper .wheel {\n  -ms-flex: 1 1 1e-9px;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  flex: 1;\n  -webkit-flex-basis: 1e-9px;\n  flex-basis: 1e-9px;\n  height: 173px;\n  overflow: hidden;\n  font-size: 21px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll {\n  margin-top: 68px;\n  line-height: 36px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll .wheel-item {\n  height: 36px;\n  overflow: hidden;\n  white-space: nowrap;\n  color: #333;\n}\n.picker .picker-footer {\n  height: 20px;\n}\n@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.7);\n    -webkit-transform-origin: 0 0;\n    transform: scaleY(0.7);\n  }\n  .border-1px::after {\n    -webkit-transform-origin: left bottom;\n  }\n}\n@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.5);\n    transform: scaleY(0.5);\n  }\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /*!**************************************!*\
   !*** ./~/css-loader/lib/css-base.js ***!
   \**************************************/
@@ -2188,7 +2210,7 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /*!*************************************!*\
   !*** ./~/style-loader/addStyles.js ***!
   \*************************************/
@@ -2443,28 +2465,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 27 */
-/*!************************************!*\
-  !*** ./src/picker/item.handlebars ***!
-  \************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var Handlebars = __webpack_require__(/*! ./~/handlebars/runtime.js */ 2);
-	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
-	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-	
-	  return "  <li class=\"wheel-item\" data-val=\""
-	    + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
-	    + "\">"
-	    + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
-	    + "</li>\n";
-	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    var stack1;
-	
-	  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-	},"useData":true});
 
 /***/ }
 /******/ ]);
