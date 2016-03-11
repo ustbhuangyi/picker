@@ -130,6 +130,7 @@
 	
 				this.$cancel.on('click', function () {
 					me.hide();
+					me.trigger('picker.cancel');
 				});
 			},
 			show: function (next) {
