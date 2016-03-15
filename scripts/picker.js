@@ -1587,7 +1587,9 @@
 					this.startY = this.y;
 				}
 
-				var pY = this.pointY - document.body.scrollTop;
+				var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+				var pY = this.pointY - scrollTop;
+
 				if (pY < this.options.momentumLimitDistance || pY > document.documentElement.clientHeight - this.options.momentumLimitDistance) {
 					this._end(e);
 				}
