@@ -69,29 +69,37 @@ picker依赖[zepto](http://zeptojs.com/)和[gmu](http://gmu.baidu.com/)；
 
 ###options
 options.title  (stirng)
+
 筛选器标题，默认为空。
 
 options.data  (array)
+
 筛选器的数据，是一个二维数组，第一维表示多少列数据，第二维表示每列的数据，单个数据是一个object，由text和value两个字段组成，text表示显示在筛选器的文本，value表示数据的值。
 
 ###事件
 picker.change
+
 当一列滚动停止的时候，会派发picker.change事件，同时会传递列序号index及滚动停止的位置selectIndex。
 
 picker.select
+
 当用户点击确定的时候，会派发picker.select事件，同时会传递每列选择的值数组selectVal和每列选择的序号数组selectIndex。
 
 picker.cancel
+
 当用户点击取消的时候，会派发picker.cancel事件。
 
 ###编程接口
 .picker('show',next)
+
 显示筛选器，next为筛选器显示后执行的回调函数。
 
 .picker('hide')
+
 隐藏筛选器，一般来说，筛选器内部已经实现了隐藏逻辑，不必主动调用。
 
 .picker('refill',data,index)
+
 重填某一列的数据，data为数据数组，index为列序号。
 
 ##如何构建
