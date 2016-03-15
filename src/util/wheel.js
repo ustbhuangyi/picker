@@ -161,7 +161,10 @@ var TOUCH_EVENT = 1;
 				this.startY = this.y;
 			}
 
-			if (this.pointY < this.options.momentumLimitDistance || this.pointY > document.documentElement.clientHeight - this.options.momentumLimitDistance) {
+			var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+			var pY = this.pointY - scrollTop;
+
+			if (pY < this.options.momentumLimitDistance || pY > document.documentElement.clientHeight - this.options.momentumLimitDistance) {
 				this._end(e);
 			}
 
