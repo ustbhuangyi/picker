@@ -224,7 +224,7 @@
   $picker4.picker({
     data: [data[index]]
   }).on('picker.select', function (e, selectVal, selectIndex) {
-    $(this).text(data1[selectIndex[0]].text);
+    $(this).text(data[index][selectIndex[0]].text);
   }).on('picker.change', function (e, index) {
     console.log(index);
   });
