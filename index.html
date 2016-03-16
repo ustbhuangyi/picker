@@ -33,6 +33,10 @@
 
   <div id="picker3">点击选择</div>
 
+  <h3>变化选择器</h3>
+
+  <div id="picker4">每次点击数据源变化</div>
+
   <footer class="site-footer">
     <span class="site-footer-owner"><a href="https://github.com/ustbhuangyi/picker">Picker</a> is maintained by <a
         href="https://github.com/ustbhuangyi">ustbhuangyi</a>.</span>
@@ -175,6 +179,7 @@
   var $picker1 = $('#picker1');
   var $picker2 = $('#picker2');
   var $picker3 = $('#picker3');
+  var $picker4 = $('#picker4');
 
   $picker1.picker({
     data: [data1]
@@ -211,7 +216,27 @@
 
   $picker3.on('click', function () {
     $(this).picker('show');
-  })
+  });
+
+  var data = [data1, data2, data3];
+  var index = 0;
+
+  $picker4.picker({
+    data: [data[index]]
+  }).on('picker.select', function (e, selectVal, selectIndex) {
+    $(this).text(data1[selectIndex[0]].text);
+  }).on('picker.change', function (e, index) {
+    console.log(index);
+  });
+
+
+  $picker4.on('click', function () {
+    index++;
+    index = index % 3;
+    $picker4.picker('show', function () {
+      $picker4.picker('refill', data[index], 0);
+    });
+  });
 
 </script>
 </html>
