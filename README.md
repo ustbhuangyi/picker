@@ -65,10 +65,10 @@ picker依赖[zepto](http://zeptojs.com/)和[gmu](http://gmu.baidu.com/)；
 
 	$name.on('click', function () {
 		$(this).picker('show');
-	});
+	});i
 
 ###options
-options.title  (stirng)
+options.title  (string)
 
 筛选器标题，默认为空。
 
