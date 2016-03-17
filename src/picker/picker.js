@@ -37,6 +37,7 @@ require('./picker.styl');
 			this.length = this.data.length;
 
 			this.selectedIndex = [];
+			this.selectedVal = [];
 			for (var i = 0; i < this.length; i++) {
 				this.selectedIndex[i] = 0;
 			}
@@ -67,16 +68,26 @@ require('./picker.styl');
 			this.$confirm.on('click', function () {
 				me.hide();
 
-				var selectedVal = [];
+				var changed = false;
 				for (var i = 0; i < me.length; i++) {
 					var index = me.wheels[i].getSelectedIndex();
 					me.selectedIndex[i] = index;
+
+					var value = null;
 					if (me.data[i].length) {
-						selectedVal.push(me.data[i][index].value);
+						value = me.data[i][index].value;
 					}
+					if (me.selectedVal[i] !== value) {
+						changed = true;
+					}
+					me.selectedVal[i] = value;
 				}
 
-				me.trigger('picker.select', selectedVal, me.selectedIndex);
+				me.trigger('picker.select', me.selectedVal, me.selectedIndex);
+
+				if (changed) {
+					me.trigger('picker.valuechange', me.selectedVal, me.selectedIndex);
+				}
 			});
 
 			this.$cancel.on('click', function () {
