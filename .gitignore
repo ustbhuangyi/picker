@@ -1,2 +1,5 @@
 .idea/
 node_modules/
+build/
+src/
+.DS_Store

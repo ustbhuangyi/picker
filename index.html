@@ -120,59 +120,59 @@
   var data2 = [
     {
       text: '输出',
-      value: 1
+      value: 'a'
     }, {
       text: '控制',
-      value: 2
+      value: 'b'
     },
     {
       text: '核心',
-      value: 3
+      value: 'c'
     },
     {
       text: '爆发',
-      value: 4
+      value: 'd'
     },
     {
       text: '辅助',
-      value: 5
+      value: 'e'
     },
     {
       text: '打野',
-      value: 6
+      value: 'f'
     },
     {
       text: '逃生',
-      value: 7
+      value: 'g'
     }, {
       text: '先手',
-      value: 8
+      value: 'h'
     },
   ];
 
   var data3 = [
     {
       text: '梅肯',
-      value: 1
+      value: 's'
     }, {
       text: '秘法鞋',
-      value: 2
+      value: 'ss'
     },
     {
       text: '假腿',
-      value: 3
+      value: 'sss'
     },
     {
       text: '飞鞋',
-      value: 4
+      value: 'ssss'
     },
     {
       text: '辉耀',
-      value: 5
+      value: 'sssss'
     },
     {
       text: '金箍棒',
-      value: 6
+      value: 'ssssss'
     }
   ];
 
@@ -185,16 +185,20 @@
     data: [data1]
   }).on('picker.select', function (e, selectVal, selectIndex) {
     $(this).text(data1[selectIndex[0]].text);
-  }).on('picker.change', function (e, index) {
+  }).on('picker.change', function (e, index, selectIndex) {
     console.log(index);
+  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
+    console.log(selectVal);
   });
 
   $picker2.picker({
     data: [data1, data2]
   }).on('picker.select', function (e, selectVal, selectIndex) {
     $(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text);
-  }).on('picker.change', function (e, index) {
+  }).on('picker.change', function (e, index, selectIndex) {
     console.log(index);
+  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
+    console.log(selectVal);
   });
 
   $picker3.picker({
@@ -202,8 +206,10 @@
     data: [data1, data2, data3]
   }).on('picker.select', function (e, selectVal, selectIndex) {
     $(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
-  }).on('picker.change', function (e, index) {
+  }).on('picker.change', function (e, index, selectIndex) {
     console.log(index);
+  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
+    console.log(selectVal);
   });
 
   $picker1.on('click', function () {
@@ -225,8 +231,10 @@
     data: [data[index]]
   }).on('picker.select', function (e, selectVal, selectIndex) {
     $(this).text(data[index][selectIndex[0]].text);
-  }).on('picker.change', function (e, index) {
-    console.log(index);
+  }).on('picker.change', function (e, index, selectIndex) {
+    console.log(index)
+  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
+    console.log(selectVal);
   });
 
 
