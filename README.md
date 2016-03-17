@@ -91,6 +91,10 @@ picker.cancel
 
 当用户点击取消的时候，会派发picker.cancel事件。
 
+picker.valuechange
+
+当用户点击确定的时候，如果本次选择的数据和上一次不一致，会派发picker.valuechange事件，同时会传递每列选择的值数组selectVal和每列选择的序号数组selectIndex。
+
 ###编程接口
 .picker('show',next)
 
