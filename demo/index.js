@@ -84,10 +84,12 @@ var data3 = [
 $name.picker({
 	data: [data1, data2, data3],
 	title: '我们都是小学生'
-}).on('select', function (e, selectVal, selectIndex) {
+}).on('picker.select', function (e, selectVal, selectIndex) {
 	$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
-}).on('change', function (e, index) {
+}).on('picker.change', function (e, index, selectIndex) {
 	console.log(index);
+}).on('picker.valuechange',function(e, selectVal, selectIndex){
+	console.log(selectVal);
 });
 
 $name.on('click', function () {

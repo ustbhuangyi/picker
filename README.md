@@ -55,13 +55,15 @@ picker依赖[zepto](http://zeptojs.com/)和[gmu](http://gmu.baidu.com/)；
 	];
 
 	$name.picker({
-		data: [data1, data2, data3],
-		title: '我们都是小学生'
-	}).on('select', function (e, selectVal, selectIndex) {
-		$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
-	}).on('change', function (e, index, selectIndex) {
-		console.log(index+' '+ selectIndex);
-	});
+    	data: [data1, data2, data3],
+    	title: '我们都是小学生'
+    }).on('picker.select', function (e, selectVal, selectIndex) {
+    	$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
+    }).on('picker.change', function (e, index, selectIndex) {
+    	console.log(index);
+    }).on('picker.valuechange',function(e, selectVal, selectIndex){
+    	console.log(selectVal);
+    });
 
 	$name.on('click', function () {
 		$(this).picker('show');
