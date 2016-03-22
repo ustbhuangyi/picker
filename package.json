@@ -1,6 +1,6 @@
 {
   "name": "picker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "h5 picker inspired by ios UIPickerView",
   "main": "index.js",
   "scripts": {

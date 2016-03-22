@@ -56,6 +56,7 @@ picker依赖[zepto](http://zeptojs.com/)和[gmu](http://gmu.baidu.com/)；
 
 	$name.picker({
     	data: [data1, data2, data3],
+    	selectIndex: [0, 1, 2],
     	title: '我们都是小学生'
     }).on('picker.select', function (e, selectVal, selectIndex) {
     	$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
@@ -77,6 +78,10 @@ options.title  (string)
 options.data  (array)
 
 筛选器的数据，是一个二维数组，第一维表示多少列数据，第二维表示每列的数据，单个数据是一个object，由text和value两个字段组成，text表示显示在筛选器的文本，value表示数据的值。
+
+options.selectIndex (array)
+
+筛选器默认选择的数据索引，是一个二维数组，第一维表示列的序号，第二维表示每列的行号，从0开始。
 
 ###事件
 picker.change
