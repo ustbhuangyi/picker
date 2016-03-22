@@ -12,6 +12,7 @@ require('./picker.styl');
 		options: {
 			data: [],
 			title: '',
+			selectIndex: null,
 			showCls: 'show'
 		},
 		_create: function () {
@@ -38,9 +39,14 @@ require('./picker.styl');
 
 			this.selectedIndex = [];
 			this.selectedVal = [];
-			for (var i = 0; i < this.length; i++) {
-				this.selectedIndex[i] = 0;
+			if (this._options.selectIndex) {
+				this.selectedIndex = this._options.selectIndex;
+			} else {
+				for (var i = 0; i < this.length; i++) {
+					this.selectedIndex[i] = 0;
+				}
 			}
+
 		},
 		_bindEvent: function () {
 			var me = this;

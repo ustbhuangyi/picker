@@ -73,7 +73,7 @@ var data3 = [
 		value: 2
 	},
 	{
-		text: '搞笑的我呀呀YY啊',
+		text: '搞笑',
 		value: 3
 	}, {
 		text: '难过',
@@ -83,12 +83,13 @@ var data3 = [
 
 $name.picker({
 	data: [data1, data2, data3],
+	selectIndex: [0, 1, 2],
 	title: '我们都是小学生'
 }).on('picker.select', function (e, selectVal, selectIndex) {
 	$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
 }).on('picker.change', function (e, index, selectIndex) {
 	console.log(index);
-}).on('picker.valuechange',function(e, selectVal, selectIndex){
+}).on('picker.valuechange', function (e, selectVal, selectIndex) {
 	console.log(selectVal);
 });
 
