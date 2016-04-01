@@ -252,21 +252,29 @@ var TOUCH_EVENT = 1;
 
 			this.scrollerStyle[_.style.transitionDuration] = time + 'ms';
 
-			for (var i = 0; i < this.itemLen; i++) {
-				this.items[i].style[_.style.transitionDuration] = time + 'ms';
+			if (!_.isBadUCBrowser) {
+				for (var i = 0; i < this.itemLen; i++) {
+					this.items[i].style[_.style.transitionDuration] = time + 'ms';
+				}
 			}
 
 			if (!time && _.isBadAndroid) {
 				this.scrollerStyle[_.style.transitionDuration] = '0.001s';
-				for (var i = 0; i < this.itemLen; i++) {
-					this.items[i].style[_.style.transitionDuration] = '0.001s';
+
+				if (!_.isBadUCBrowser) {
+					for (var i = 0; i < this.itemLen; i++) {
+						this.items[i].style[_.style.transitionDuration] = '0.001s';
+					}
 				}
 			}
 		},
 		_transitionTimingFunction: function (easing) {
 			this.scrollerStyle[_.style.transitionTimingFunction] = easing;
-			for (var i = 0; i < this.itemLen; i++) {
-				this.items[i].style[_.style.transitionTimingFunction] = easing;
+
+			if (!_.isBadUCBrowser) {
+				for (var i = 0; i < this.itemLen; i++) {
+					this.items[i].style[_.style.transitionTimingFunction] = easing;
+				}
 			}
 		},
 		_transitionEnd: function (e) {
@@ -283,9 +291,11 @@ var TOUCH_EVENT = 1;
 		_translate: function (y) {
 			this.scrollerStyle[_.style.transform] = 'translateY(' + y + 'px)' + this.translateZ;
 
-			for (var i = 0; i < this.itemLen; i++) {
-				var deg = this.options.rotate * (y / this.itemHeight + i);
-				this.items[i].style[_.style.transform] = 'rotateX(' + deg + 'deg)';
+			if (!_.isBadUCBrowser) {
+				for (var i = 0; i < this.itemLen; i++) {
+					var deg = this.options.rotate * (y / this.itemHeight + i);
+					this.items[i].style[_.style.transform] = 'rotateX(' + deg + 'deg)';
+				}
 			}
 
 			this.y = y;
