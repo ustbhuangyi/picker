@@ -1,7 +1,6 @@
-FastClick.attach(document.body);
+// FastClick.attach(document.body);
 
 var $name = $('#name');
-
 
 var data1 = [
 	{

@@ -230,13 +230,14 @@ var TOUCH_EVENT = 1;
 			this._trigger('scrollEnd');
 		},
 		_resize: function () {
-			var me = this;
+			if (!this.enabled)
+				return;
 
 			clearTimeout(this.resizeTimeout);
 
 			this.resizeTimeout = setTimeout(function () {
-				me.refresh();
-			}, this.options.resizePolling);
+				this.refresh();
+			}.bind(this), this.options.resizePolling);
 		},
 		_trigger: function (type) {
 			var events = this._events[type];
@@ -252,7 +253,7 @@ var TOUCH_EVENT = 1;
 
 			this.scrollerStyle[_.style.transitionDuration] = time + 'ms';
 
-			if (!_.isBadUCBrowser) {
+			if (!_.isBadAndroid) {
 				for (var i = 0; i < this.itemLen; i++) {
 					this.items[i].style[_.style.transitionDuration] = time + 'ms';
 				}
@@ -261,7 +262,7 @@ var TOUCH_EVENT = 1;
 			if (!time && _.isBadAndroid) {
 				this.scrollerStyle[_.style.transitionDuration] = '0.001s';
 
-				if (!_.isBadUCBrowser) {
+				if (!_.isBadAndroid) {
 					for (var i = 0; i < this.itemLen; i++) {
 						this.items[i].style[_.style.transitionDuration] = '0.001s';
 					}
@@ -271,7 +272,7 @@ var TOUCH_EVENT = 1;
 		_transitionTimingFunction: function (easing) {
 			this.scrollerStyle[_.style.transitionTimingFunction] = easing;
 
-			if (!_.isBadUCBrowser) {
+			if (!_.isBadAndroid) {
 				for (var i = 0; i < this.itemLen; i++) {
 					this.items[i].style[_.style.transitionTimingFunction] = easing;
 				}
@@ -291,7 +292,7 @@ var TOUCH_EVENT = 1;
 		_translate: function (y) {
 			this.scrollerStyle[_.style.transform] = 'translateY(' + y + 'px)' + this.translateZ;
 
-			if (!_.isBadUCBrowser) {
+			if (!_.isBadAndroid) {
 				for (var i = 0; i < this.itemLen; i++) {
 					var deg = this.options.rotate * (y / this.itemHeight + i);
 					this.items[i].style[_.style.transform] = 'rotateX(' + deg + 'deg)';
@@ -356,6 +357,7 @@ var TOUCH_EVENT = 1;
 			time = time || 0;
 
 			var y = this.y;
+
 			if (y > 0) {
 				y = 0;
 			} else if (y < this.maxScrollY) {

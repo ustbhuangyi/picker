@@ -95,8 +95,6 @@ _.momentum = function (current, start, time, lowerMargin, wrapperSize, options) 
 // This should find all Android browsers lower than build 535.19 (both stock browser and webview)
 _.isBadAndroid = /Android /.test(window.navigator.appVersion) && !(/Chrome\/\d/.test(window.navigator.appVersion));
 
-_.isBadUCBrowser = /Android/.test(window.navigator.userAgent) && /UCBrowser/.test(window.navigator.userAgent);
-
 var transform = prefixStyle('transform');
 
 _.extend(_, {
