@@ -46,7 +46,6 @@ require('./picker.styl');
 					this.selectedIndex[i] = 0;
 				}
 			}
-
 		},
 		_bindEvent: function () {
 			var me = this;
@@ -124,6 +123,7 @@ require('./picker.styl');
 					}
 				} else {
 					for (var i = 0; i < this.length; i++) {
+						this.wheels[i].enable();
 						this.wheels[i].goTo(this.selectedIndex[i]);
 					}
 				}
@@ -137,6 +137,9 @@ require('./picker.styl');
 
 			setTimeout(function () {
 				this.$picker.hide();
+				for (var i = 0; i < this.length; i++) {
+					this.wheels[i].disable();
+				}
 			}.bind(this), 500);
 		},
 		refill: function (data, index) {
