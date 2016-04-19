@@ -58,6 +58,7 @@
 			options: {
 				data: [],
 				title: '',
+				selectIndex: null,
 				showCls: 'show'
 			},
 			_create: function () {
@@ -84,8 +85,12 @@
 
 				this.selectedIndex = [];
 				this.selectedVal = [];
-				for (var i = 0; i < this.length; i++) {
-					this.selectedIndex[i] = 0;
+				if (this._options.selectIndex) {
+					this.selectedIndex = this._options.selectIndex;
+				} else {
+					for (var i = 0; i < this.length; i++) {
+						this.selectedIndex[i] = 0;
+					}
 				}
 			},
 			_bindEvent: function () {
@@ -164,6 +169,7 @@
 						}
 					} else {
 						for (var i = 0; i < this.length; i++) {
+							this.wheels[i].enable();
 							this.wheels[i].goTo(this.selectedIndex[i]);
 						}
 					}
@@ -177,6 +183,9 @@
 
 				setTimeout(function () {
 					this.$picker.hide();
+					for (var i = 0; i < this.length; i++) {
+						this.wheels[i].disable();
+					}
 				}.bind(this), 500);
 			},
 			refill: function (data, index) {
@@ -1667,13 +1676,14 @@
 				this._trigger('scrollEnd');
 			},
 			_resize: function () {
-				var me = this;
+				if (!this.enabled)
+					return;
 
 				clearTimeout(this.resizeTimeout);
 
 				this.resizeTimeout = setTimeout(function () {
-					me.refresh();
-				}, this.options.resizePolling);
+					this.refresh();
+				}.bind(this), this.options.resizePolling);
 			},
 			_trigger: function (type) {
 				var events = this._events[type];
@@ -1689,21 +1699,29 @@
 
 				this.scrollerStyle[_.style.transitionDuration] = time + 'ms';
 
-				for (var i = 0; i < this.itemLen; i++) {
-					this.items[i].style[_.style.transitionDuration] = time + 'ms';
+				if (!_.isBadAndroid) {
+					for (var i = 0; i < this.itemLen; i++) {
+						this.items[i].style[_.style.transitionDuration] = time + 'ms';
+					}
 				}
 
 				if (!time && _.isBadAndroid) {
 					this.scrollerStyle[_.style.transitionDuration] = '0.001s';
-					for (var i = 0; i < this.itemLen; i++) {
-						this.items[i].style[_.style.transitionDuration] = '0.001s';
+
+					if (!_.isBadAndroid) {
+						for (var i = 0; i < this.itemLen; i++) {
+							this.items[i].style[_.style.transitionDuration] = '0.001s';
+						}
 					}
 				}
 			},
 			_transitionTimingFunction: function (easing) {
 				this.scrollerStyle[_.style.transitionTimingFunction] = easing;
-				for (var i = 0; i < this.itemLen; i++) {
-					this.items[i].style[_.style.transitionTimingFunction] = easing;
+
+				if (!_.isBadAndroid) {
+					for (var i = 0; i < this.itemLen; i++) {
+						this.items[i].style[_.style.transitionTimingFunction] = easing;
+					}
 				}
 			},
 			_transitionEnd: function (e) {
@@ -1720,9 +1738,11 @@
 			_translate: function (y) {
 				this.scrollerStyle[_.style.transform] = 'translateY(' + y + 'px)' + this.translateZ;
 
-				for (var i = 0; i < this.itemLen; i++) {
-					var deg = this.options.rotate * (y / this.itemHeight + i);
-					this.items[i].style[_.style.transform] = 'rotateX(' + deg + 'deg)';
+				if (!_.isBadAndroid) {
+					for (var i = 0; i < this.itemLen; i++) {
+						var deg = this.options.rotate * (y / this.itemHeight + i);
+						this.items[i].style[_.style.transform] = 'rotateX(' + deg + 'deg)';
+					}
 				}
 
 				this.y = y;
@@ -1783,6 +1803,7 @@
 				time = time || 0;
 
 				var y = this.y;
+
 				if (y > 0) {
 					y = 0;
 				} else if (y < this.maxScrollY) {
@@ -2082,7 +2103,7 @@
 
 
 	// module
-	exports.push([module.id, ".picker {\n  display: none;\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  text-align: center;\n  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';\n  font-size: 14px;\n  -moz-user-select: none;\n  -webkit-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.picker .picker-mask {\n  position: absolute;\n  z-index: 500;\n  width: 100%;\n  height: 100%;\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n  background: rgba(0,0,0,0);\n  opacity: 0;\n}\n.picker .picker-mask.show {\n  background: rgba(0,0,0,0.6);\n  opacity: 1;\n}\n.picker .picker-panel {\n  position: absolute;\n  z-index: 600;\n  bottom: 0;\n  width: 100%;\n  height: 243px;\n  background: #fff;\n  transform: translateY(243px);\n  -webkit-transform: translateY(243px);\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n}\n.picker .picker-panel.show {\n  transform: translateY(0);\n  -webkit-transform: translateY(0);\n}\n.picker .picker-panel .picker-choose {\n  position: relative;\n  height: 50px;\n  color: #878787;\n  font-size: 14px;\n}\n.picker .picker-panel .picker-choose .picker-title {\n  line-height: 50px;\n  font-size: 19px;\n  text-align: center;\n  color: #333;\n}\n.picker .picker-panel .picker-choose .confirm,\n.picker .picker-panel .picker-choose .cancel {\n  position: absolute;\n  padding: 10px;\n  top: 6px;\n}\n.picker .picker-panel .picker-choose .confirm {\n  right: 0;\n  color: #fa8919;\n}\n.picker .picker-panel .picker-choose .cancel {\n  left: 0;\n}\n.picker .picker-panel .picker-content {\n  position: relative;\n}\n.picker .picker-panel .picker-content .mask-top,\n.picker .picker-panel .picker-content .mask-bottom {\n  position: absolute;\n  z-index: 10;\n  width: 100%;\n  height: 68px;\n  pointer-events: none;\n}\n.picker .picker-panel .picker-content .mask-top {\n  top: 0;\n  background: -moz-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-top:before,\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-top:before {\n  display: none;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  bottom: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom {\n  bottom: 0;\n  background: -moz-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-bottom:before,\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-bottom:before {\n  display: block;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: none;\n  bottom: 0;\n}\n.picker .picker-panel .wheel-wrapper {\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: flex;\n  padding: 0 10px;\n}\n.picker .picker-panel .wheel-wrapper .wheel {\n  -ms-flex: 1 1 1e-9px;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  flex: 1;\n  -webkit-flex-basis: 1e-9px;\n  flex-basis: 1e-9px;\n  width: 1%;\n  height: 173px;\n  overflow: hidden;\n  font-size: 21px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll {\n  margin-top: 68px;\n  line-height: 36px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll .wheel-item {\n  height: 36px;\n  overflow: hidden;\n  white-space: nowrap;\n  color: #333;\n}\n.picker .picker-footer {\n  height: 20px;\n}\n@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.7);\n    -webkit-transform-origin: 0 0;\n    transform: scaleY(0.7);\n  }\n  .border-1px::after {\n    -webkit-transform-origin: left bottom;\n  }\n}\n@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.5);\n    transform: scaleY(0.5);\n  }\n}\n", ""]);
+	exports.push([module.id, ".picker {\n  display: none;\n  position: fixed;\n  top: 0;\n  z-index: 100;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  text-align: center;\n  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';\n  font-size: 14px;\n  -moz-user-select: none;\n  -webkit-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n.picker .picker-mask {\n  position: absolute;\n  z-index: 500;\n  width: 100%;\n  height: 100%;\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n  background: rgba(0,0,0,0);\n  opacity: 0;\n}\n.picker .picker-mask.show {\n  background: rgba(0,0,0,0.6);\n  opacity: 1;\n}\n.picker .picker-panel {\n  position: absolute;\n  z-index: 600;\n  bottom: 0;\n  width: 100%;\n  height: 243px;\n  background: #fff;\n  transform: translateY(243px);\n  -webkit-transform: translateY(243px);\n  transition: all 0.5s;\n  -webkit-transition: all 0.5s;\n}\n.picker .picker-panel.show {\n  transform: translateY(0);\n  -webkit-transform: translateY(0);\n}\n.picker .picker-panel .picker-choose {\n  position: relative;\n  height: 50px;\n  color: #878787;\n  font-size: 14px;\n}\n.picker .picker-panel .picker-choose .picker-title {\n  line-height: 50px;\n  font-size: 19px;\n  text-align: center;\n  color: #333;\n}\n.picker .picker-panel .picker-choose .confirm,\n.picker .picker-panel .picker-choose .cancel {\n  position: absolute;\n  padding: 10px;\n  top: 6px;\n}\n.picker .picker-panel .picker-choose .confirm {\n  right: 0;\n  color: #fa8919;\n}\n.picker .picker-panel .picker-choose .cancel {\n  left: 0;\n}\n.picker .picker-panel .picker-content {\n  position: relative;\n}\n.picker .picker-panel .picker-content .mask-top,\n.picker .picker-panel .picker-content .mask-bottom {\n  position: absolute;\n  z-index: 10;\n  width: 100%;\n  height: 68px;\n  pointer-events: none;\n}\n.picker .picker-panel .picker-content .mask-top {\n  top: 0;\n  background: -moz-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-top:before,\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-top:before {\n  display: none;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-top:after {\n  display: block;\n  bottom: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom {\n  bottom: 0;\n  background: -moz-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.4)), to(rgba(255,255,255,0.8)));\n  background: -o-linear-gradient(top, rgba(255,255,255,0.4), rgba(255,255,255,0.8));\n}\n.picker .picker-panel .picker-content .mask-bottom:before,\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: block;\n  position: absolute;\n  border-top: 1px solid #ccc;\n  left: 0;\n  width: 100%;\n  content: ' ';\n}\n.picker .picker-panel .picker-content .mask-bottom:before {\n  display: block;\n  top: 0;\n}\n.picker .picker-panel .picker-content .mask-bottom:after {\n  display: none;\n  bottom: 0;\n}\n.picker .picker-panel .wheel-wrapper {\n  display: -ms-flexbox;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: flex;\n  padding: 0 10px;\n}\n.picker .picker-panel .wheel-wrapper .wheel {\n  -ms-flex: 1 1 1e-9px;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  flex: 1;\n  -webkit-flex-basis: 1e-9px;\n  flex-basis: 1e-9px;\n  width: 1%;\n  height: 173px;\n  overflow: hidden;\n  font-size: 21px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll {\n  margin-top: 68px;\n  line-height: 36px;\n}\n.picker .picker-panel .wheel-wrapper .wheel .wheel-scroll .wheel-item {\n  height: 36px;\n  overflow: hidden;\n  white-space: nowrap;\n  color: #333;\n}\n.picker .picker-footer {\n  height: 20px;\n}\n@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.7);\n    -webkit-transform-origin: 0 0;\n    transform: scaleY(0.7);\n  }\n  .border-1px::after {\n    -webkit-transform-origin: left bottom;\n  }\n}\n@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {\n  .border-1px::after,\n  .border-1px::before {\n    -webkit-transform: scaleY(0.5);\n    transform: scaleY(0.5);\n  }\n}\n", ""]);
 
 	// exports
 
