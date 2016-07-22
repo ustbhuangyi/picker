@@ -338,7 +338,9 @@ var TOUCH_EVENT = 1;
 			//this.scrollerHeight = parseInt(this.scroller.style.height) || this.scroller.clientHeight;
 			this.options.itemHeight = this.itemHeight = this.items.length ? this.items[0].clientHeight : 0;
 
-			this.selectedIndex = this.options.selectedIndex;
+			if (this.selectedIndex === undefined) {
+				this.selectedIndex = this.options.selectedIndex;
+			}
 			this.y = -this.selectedIndex * this.itemHeight;
 
 			this.itemLen = this.items.length;
