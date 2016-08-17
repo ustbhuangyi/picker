@@ -48,7 +48,7 @@ _.addEvent = function (el, type, fn, capture) {
 
 _.removeEvent = function (el, type, fn, capture) {
 	el.removeEventListener(type, fn, !!capture);
-};
+};  
 
 _.offset = function (el) {
 	var left = 0;

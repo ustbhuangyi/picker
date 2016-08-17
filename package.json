@@ -4,7 +4,7 @@
   "description": "h5 picker inspired by ios UIPickerView",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --port 9090 --inline --hot --content-base ./demo --host 0.0.0.0"
   },
   "repository": {
     "type": "git",

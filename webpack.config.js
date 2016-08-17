@@ -8,6 +8,7 @@ module.exports = {
 	},
 	output: {
 		path: __dirname + '/build',
+		publicPath: '/assets/',
 		filename: '[name].js'
 	},
 	module: {
