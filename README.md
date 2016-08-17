@@ -136,11 +136,11 @@ npm install -g webpack
 ```bash
 npm install -g webpack-dev-server
 ```
-启动server
+测试demo页
 
 ```bash
-webpack-dev-server
+npm run dev
 ```
-打开浏览器访问如下地址
+打开浏览器访问如下地址, 查看效果
 
-> localhost:8080/demo
+> localhost:9090
