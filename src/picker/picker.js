@@ -37,7 +37,7 @@ export default class Picker extends EventEmitter {
 		this.panelEl = this.pickerEl.getElementsByClassName('panel-hook')[0];
 		this.confirmEl = this.pickerEl.getElementsByClassName('confirm-hook')[0];
 		this.cancelEl = this.pickerEl.getElementsByClassName('cancel-hook')[0];
-		this.scrollEl = this.pickerEl.getElementsByClassName('.wheel-scroll-hook');
+		this.scrollEl = this.pickerEl.getElementsByClassName('wheel-scroll-hook');
 
 		this._init();
 	}
