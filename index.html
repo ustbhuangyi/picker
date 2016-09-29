@@ -50,12 +50,8 @@
 
 </body>
 <script src="http://img6.didistatic.com/static/tms/cdn/z/zepto/zepto/1.1.4/zepto.min.js"></script>
-<script src="scripts/fastclick.js"></script>
-<script src="scripts/gmu.js"></script>
-<script src="scripts/picker.js"></script>
+<script src="scripts/picker.min.js"></script>
 <script>
-  FastClick.attach(document.body);
-
   var data1 = [
     {
       text: '剧毒',
@@ -176,73 +172,96 @@
     }
   ];
 
-  var $picker1 = $('#picker1');
-  var $picker2 = $('#picker2');
-  var $picker3 = $('#picker3');
-  var $picker4 = $('#picker4');
+  var picker1El = document.getElementById('picker1');
+  var picker2El = document.getElementById('picker2');
+  var picker3El = document.getElementById('picker3');
+  var picker4El = document.getElementById('picker4');
 
-  $picker1.picker({
+  var picker1 = new Picker({
     data: [data1]
-  }).on('picker.select', function (e, selectVal, selectIndex) {
-    $(this).text(data1[selectIndex[0]].text);
-  }).on('picker.change', function (e, index, selectIndex) {
-    console.log(index);
-  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
-    console.log(selectVal);
   });
 
-  $picker2.picker({
+  picker1.on('picker.select', function (selectedVal, selectedIndex) {
+    picker1El.innerText = data1[selectedIndex[0]].text;
+  });
+
+  picker1.on('picker.change', function (index, selectedIndex) {
+    console.log(index);
+  });
+
+  picker1.on('picker.valuechange', function (selectedVal, selectedIndex) {
+    console.log(selectedVal);
+  });
+
+  var picker2 = new Picker({
     data: [data1, data2]
-  }).on('picker.select', function (e, selectVal, selectIndex) {
-    $(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text);
-  }).on('picker.change', function (e, index, selectIndex) {
-    console.log(index);
-  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
-    console.log(selectVal);
   });
 
-  $picker3.picker({
+  picker2.on('picker.select', function (selectedVal, selectedIndex) {
+    picker2El.innerText = data1[selectedIndex[0]].text + ' ' + data2[selectedIndex[1]].text;
+  });
+
+  picker2.on('picker.change', function (index, selectedIndex) {
+    console.log(index);
+  });
+
+  picker2.on('picker.valuechange', function (selectedVal, selectedIndex) {
+    console.log(selectedVal);
+  });
+
+  var picker3 = new Picker({
     title: '我们都爱打dota',
     data: [data1, data2, data3]
-  }).on('picker.select', function (e, selectVal, selectIndex) {
-    $(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
-  }).on('picker.change', function (e, index, selectIndex) {
+  });
+
+  picker3.on('picker.select', function (selectedVal, selectedIndex) {
+    picker3El.innerText = data1[selectedIndex[0]].text + ' ' + data2[selectedIndex[1]].text + ' ' + data3[selectedIndex[2]].text;
+  });
+
+  picker3.on('picker.change', function (index, selectedIndex) {
     console.log(index);
-  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
-    console.log(selectVal);
   });
 
-  $picker1.on('click', function () {
-    $(this).picker('show');
+  picker3.on('picker.valuechange', function (selectedVal, selectedIndex) {
+    console.log(selectedVal);
   });
 
-  $picker2.on('click', function () {
-    $(this).picker('show');
+  picker1El.addEventListener('click', function () {
+    picker1.show();
   });
 
-  $picker3.on('click', function () {
-    $(this).picker('show');
+  picker2El.addEventListener('click', function () {
+    picker2.show();
+  });
+
+  picker3El.addEventListener('click', function () {
+    picker3.show();
   });
 
   var data = [data1, data2, data3];
   var index = 0;
 
-  $picker4.picker({
+  var picker4 = new Picker({
     data: [data[index]]
-  }).on('picker.select', function (e, selectVal, selectIndex) {
-    $(this).text(data[index][selectIndex[0]].text);
-  }).on('picker.change', function (e, index, selectIndex) {
-    console.log(index)
-  }).on('picker.valuechange', function (e, selectVal, selectIndex) {
-    console.log(selectVal);
   });
 
+  picker4.on('picker.select', function (selectedVal, selectedIndex) {
+    picker4El.innerText = data[index][selectedIndex[0]].text;
+  });
 
-  $picker4.on('click', function () {
+  picker4.on('picker.change', function (index, selectedIndex) {
+    console.log(index);
+  });
+
+  picker4.on('picker.valuechange', function (selectedVal, selectedIndex) {
+    console.log(selectedVal);
+  });
+
+  picker4El.addEventListener('click', function () {
     index++;
     index = index % 3;
-    $picker4.picker('show', function () {
-      $picker4.picker('refill', data[index], 0);
+    picker4.show(function () {
+      picker4.refill(data[index], 0);
     });
   });
 
