@@ -1,172 +1,165 @@
-'use strict';
+import BScroll from 'better-scroll';
+import EventEmitter from '../util/eventEmitter';
+import {extend} from '../util/lang';
+import {
+	createDom,
+	addEvent,
+	addClass,
+	removeClass
+} from '../util/dom';
+import pickerTemplate from './picker.handlebars';
+import itemTemplate from './item.handlebars';
+import './picker.styl';
 
-var pickerTemplate = require('./picker.handlebars');
-var itemTemplate = require('./item.handlebars');
-var Wheel = require('../util/wheel.js');
+export default class Picker extends EventEmitter {
+	constructor(options) {
+		super();
 
-require('./picker.styl');
-
-(function (gmu, $, undefined) {
-
-	gmu.define('picker', {
-		options: {
+		this.options = {
 			data: [],
 			title: '',
-			selectIndex: null,
+			selectedIndex: null,
 			showCls: 'show'
-		},
-		_create: function () {
-			this.data = this._options.data;
+		};
 
-			this.$picker = $(pickerTemplate({
-				data: this.data,
-				title: this._options.title
-			})).appendTo($(document.body));
-			this.$mask = $('.mask-hook', this.$picker);
-			this.$wheel = $('.wheel-hook', this.$picker);
-			this.$panel = $('.panel-hook', this.$picker);
-			this.$confirm = $('.confirm-hook', this.$picker);
-			this.$cancel = $('.cancel-hook', this.$picker);
-			this.$choose = $('.choose-hook', this.$picker);
-			this.$wrapper = $('.wheel-wrapper-hook', this.$picker);
-			this.$scroll = $('.wheel-scroll-hook', this.$picker);
-			this.$footer = $('.footer-hook', this.$picker);
+		extend(this.options, options);
 
-			this._bindEvent();
-		},
-		_init: function () {
-			this.length = this.data.length;
+		this.data = this.options.data;
+		this.pickerEl = createDom(pickerTemplate({
+			data: this.data,
+			title: this.options.title
+		}));
 
-			this.selectedIndex = [];
-			this.selectedVal = [];
-			if (this._options.selectIndex) {
-				this.selectedIndex = this._options.selectIndex;
-			} else {
-				for (var i = 0; i < this.length; i++) {
-					this.selectedIndex[i] = 0;
-				}
-			}
-		},
-		_bindEvent: function () {
-			var me = this;
+		document.body.appendChild(this.pickerEl);
 
-			this.$mask.on('touchmove', function () {
-				return false;
-			});
+		this.maskEl = this.pickerEl.getElementsByClassName('mask-hook')[0];
+		this.wheelEl = this.pickerEl.getElementsByClassName('wheel-hook');
+		this.panelEl = this.pickerEl.getElementsByClassName('panel-hook')[0];
+		this.confirmEl = this.pickerEl.getElementsByClassName('confirm-hook')[0];
+		this.cancelEl = this.pickerEl.getElementsByClassName('cancel-hook')[0];
+		this.scrollEl = this.pickerEl.getElementsByClassName('.wheel-scroll-hook');
 
-			this.$choose.on('touchmove', function () {
-				return false;
-			});
+		this._init();
+	}
 
-			this.$mask.on('touchstart', function () {
-				return false;
-			});
-
-			this.$wrapper.on('touchstart', function () {
-				return false;
-			});
-
-			this.$footer.on('touchstart', function () {
-				return false;
-			});
-
-			this.$confirm.on('click', function () {
-				me.hide();
-
-				var changed = false;
-				for (var i = 0; i < me.length; i++) {
-					var index = me.wheels[i].getSelectedIndex();
-					me.selectedIndex[i] = index;
-
-					var value = null;
-					if (me.data[i].length) {
-						value = me.data[i][index].value;
-					}
-					if (me.selectedVal[i] !== value) {
-						changed = true;
-					}
-					me.selectedVal[i] = value;
-				}
-
-				me.trigger('picker.select', me.selectedVal, me.selectedIndex);
-
-				if (changed) {
-					me.trigger('picker.valuechange', me.selectedVal, me.selectedIndex);
-				}
-			});
-
-			this.$cancel.on('click', function () {
-				me.hide();
-				me.trigger('picker.cancel');
-			});
-		},
-		show: function (next) {
-			this.$picker.show();
-			var showCls = this._options.showCls;
-
-			setTimeout(function () {
-				this.$mask.addClass(showCls);
-				this.$panel.addClass(showCls);
-
-				if (!this.wheels) {
-					this.wheels = [];
-					for (var i = 0; i < this.length; i++) {
-						this.wheels[i] = new Wheel(this.$wheel[i], {
-							tap: 'wheelTap',
-							selectedIndex: this.selectedIndex[i]
-						});
-						(function (index) {
-							this.wheels[index].on('scrollEnd', function () {
-								this.trigger('picker.change', index, this.wheels[index].getSelectedIndex());
-							}.bind(this));
-						}.bind(this))(i);
-					}
-				} else {
-					for (var i = 0; i < this.length; i++) {
-						this.wheels[i].enable();
-						this.wheels[i].goTo(this.selectedIndex[i]);
-					}
-				}
-				next && next();
-			}.bind(this), 0);
-		},
-		hide: function () {
-			var showCls = this._options.showCls;
-			this.$mask.removeClass(showCls);
-			this.$panel.removeClass(showCls);
-
-			setTimeout(function () {
-				this.$picker.hide();
-				for (var i = 0; i < this.length; i++) {
-					this.wheels[i].disable();
-				}
-			}.bind(this), 500);
-		},
-		refill: function (data, index) {
-			var $scroll = this.$scroll.eq(index);
-			var wheel = this.wheels[index];
-			if ($scroll && wheel) {
-				var oldData = this.data[index];
-				this.data[index] = data;
-				$scroll.html(itemTemplate(data));
-
-				var selectedIndex = wheel.getSelectedIndex();
-				var dist = 0;
-				if (oldData.length) {
-					var oldValue = oldData[selectedIndex].value;
-					for (var i = 0; i < data.length; i++) {
-						if (data[i].value === oldValue) {
-							dist = i;
-							break;
-						}
-					}
-				}
-				this.selectedIndex[index] = dist;
-				wheel.refresh();
-				wheel.goTo(dist);
-				return dist;
+	_init() {
+		this.selectedIndex = [];
+		this.selectedVal = [];
+		if (this.options.selectedIndex) {
+			this.selectedIndex = this.options.selectedIndex;
+		} else {
+			for (let i = 0; i < this.data.length; i++) {
+				this.selectedIndex[i] = 0;
 			}
 		}
-	});
 
-})(gmu, gmu.$);
+		this._bindEvent();
+	}
+
+	_bindEvent() {
+		addEvent(this.confirmEl, 'click', () => {
+			this.hide();
+
+			let changed = false;
+			for (let i = 0; i < this.data.length; i++) {
+				let index = this.wheels[i].getSelectedIndex();
+				this.selectedIndex[i] = index;
+
+				let value = null;
+				if (this.data[i].length) {
+					value = this.data[i][index].value;
+				}
+				if (this.selectedVal[i] !== value) {
+					changed = true;
+				}
+				this.selectedVal[i] = value;
+			}
+
+			this.trigger('picker.select', this.selectedVal, this.selectedIndex);
+
+			if (changed) {
+				this.trigger('picker.valuechange', this.selectedVal, this.selectedIndex);
+			}
+		});
+
+		addEvent(this.cancelEl, 'click', () => {
+			this.hide();
+			this.trigger('picker.cancel');
+		});
+	}
+
+	_createWheel(wheelEl, i) {
+		this.wheels[i] = new BScroll(wheelEl[i], {
+			wheel: true,
+			selectedIndex: this.selectedIndex[i]
+		});
+		((index) => {
+			this.wheels[index].on('scrollEnd', () => {
+				this.trigger('picker.change', index, this.wheels[index].getSelectedIndex());
+			});
+		})(i);
+		return this.wheels[i];
+	}
+
+	show(next) {
+		this.pickerEl.style.display = 'block';
+		let showCls = this.options.showCls;
+
+		window.setTimeout(() => {
+			addClass(this.maskEl, showCls);
+			addClass(this.panelEl, showCls);
+
+			if (!this.wheels) {
+				this.wheels = [];
+				for (let i = 0; i < this.data.length; i++) {
+					this._createWheel(this.wheelEl, i);
+				}
+			} else {
+				for (let i = 0; i < this.data.length; i++) {
+					this.wheels[i].enable();
+					this.wheels[i].wheelTo(this.selectedIndex[i]);
+				}
+			}
+			next && next();
+		}, 0);
+	}
+
+	hide() {
+		let showCls = this.options.showCls;
+		removeClass(this.maskEl, showCls);
+		removeClass(this.panelEl, showCls);
+
+		window.setTimeout(() => {
+			this.pickerEl.style.display = 'none';
+			for (let i = 0; i < this.length; i++) {
+				this.wheels[i].disable();
+			}
+		}, 500);
+	}
+
+	refill(data, index) {
+		let scrollEl = this.scrollEl[index];
+		let wheel = this.wheels[index];
+		if (scrollEl && wheel) {
+			let oldData = this.data[index];
+			this.data[index] = data;
+			scrollEl.innerHTML = itemTemplate(data);
+
+			let selectedIndex = wheel.getSelectedIndex();
+			let dist = 0;
+			if (oldData.length) {
+				let oldValue = oldData[selectedIndex].value;
+				for (let i = 0; i < data.length; i++) {
+					if (data[i].value === oldValue) {
+						dist = i;
+						break;
+					}
+				}
+			}
+			this.selectedIndex[index] = dist;
+			wheel.refresh();
+			wheel.wheelTo(dist);
+			return dist;
+		}
+	};
+}

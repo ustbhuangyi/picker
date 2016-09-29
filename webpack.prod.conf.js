@@ -10,10 +10,8 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),
 		library: 'Picker',
 		libraryTarget: 'umd',
-		publicPath: '/assets/',
-		filename: '[name].js'
+		filename: '[name].min.js'
 	},
-	devtool: '#eval-source-map',
 	module: {
 		preLoaders: [
 			{
@@ -50,6 +48,11 @@ module.exports = {
 		root: path.join(__dirname, 'node_modules')
 	},
 	plugins: [
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false
+			}
+		}),
 		new webpack.DefinePlugin({
 			__VERSION__: JSON.stringify(version)
 		})

@@ -1,6 +1,4 @@
-// FastClick.attach(document.body);
-
-var $name = $('#name');
+var nameEl = document.getElementById('name');
 
 var data1 = [
 	{
@@ -80,20 +78,28 @@ var data3 = [
 	}
 ];
 
-$name.picker({
+var picker = new Picker({
 	data: [data1, data2, data3],
-	selectIndex: [0, 1, 2],
+	selectedIndex: [0, 1, 2],
 	title: '我们都是小学生'
-}).on('picker.select', function (e, selectVal, selectIndex) {
-	$(this).text(data1[selectIndex[0]].text + ' ' + data2[selectIndex[1]].text + ' ' + data3[selectIndex[2]].text);
-}).on('picker.change', function (e, index, selectIndex) {
-	console.log(index);
-}).on('picker.valuechange', function (e, selectVal, selectIndex) {
-	console.log(selectVal);
 });
 
-$name.on('click', function () {
-	$(this).picker('show');
+picker.on('picker.select', function (selectedVal, selectedIndex) {
+	nameEl.innerText = data1[selectedIndex[0]].text + ' ' + data2[selectedIndex[1]].text + ' ' + data3[selectedIndex[2]].text;
+})
+
+picker.on('picker.change', function (index, selectedIndex) {
+	console.log(index);
+	console.log(selectedIndex);
+});
+
+picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
+	console.log(selectedVal);
+	console.log(selectedIndex);
+});
+
+nameEl.addEventListener('click', function () {
+	picker.show();
 });
 
 
