@@ -57,6 +57,10 @@ export default class Picker extends EventEmitter {
 	}
 
 	_bindEvent() {
+		addEvent(this.pickerEl, 'touchmove', (e) => {
+			e.preventDefault();
+		});
+
 		addEvent(this.confirmEl, 'click', () => {
 			this.hide();
 
