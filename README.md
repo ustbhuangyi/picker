@@ -164,9 +164,17 @@ hide ()
 
 隐藏筛选器，一般来说，筛选器内部已经实现了隐藏逻辑，不必主动调用。
 
-refill (data, index)
+refill (datas)
 
-重填某一列的数据，data为数据数组，index为列序号。
+重填全部数据，datas为二位数组，如[lists1, lists2, lists3]
+
+refillColumn(index, data)
+
+重填某一列的数据，index为列序号，data为数据数组。
+
+scrollColumn(index, dist)
+
+复位某一列的默认选项，index为列序号，dist为选项的下标，起始值为0
 
 ##如何构建
 picker的源码是基于webpack构建的
