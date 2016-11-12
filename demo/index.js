@@ -1,21 +1,17 @@
 var nameEl = document.getElementById('chose');
 
-var first = [];
-/* 省，直辖市 */
-var second = [];
-/* 市 */
-var third = [];
-/* 镇 */
+var first = []; /* 省，直辖市 */
+var second = []; /* 市 */
+var third = []; /* 镇 */
 
-var checked = [0, 0, 0];
-/* 已选选项 */
+var checked = [0, 0, 0]; /* 已选选项 */
 
-function creatList(obj, list) {
-  obj.forEach(function (item, index, arr) {
-    var temp = new Object();
-    temp.text = item.name;
-    temp.value = index;
-    list.push(temp);
+function creatList(obj, list){
+  obj.forEach(function(item, index, arr){
+  var temp = new Object();
+  temp.text = item.name;
+  temp.value = index;
+  list.push(temp);
   })
 }
 
@@ -34,9 +30,9 @@ if (city[0].sub[0].hasOwnProperty('sub')) {
 }
 
 var picker = new Picker({
-  data: [first, second, third],
-  selectedIndex: [0, 0, 0],
-  title: '地址选择'
+	data: [first, second, third],
+	selectedIndex: [0, 0, 0],
+	title: '地址选择'
 });
 
 picker.on('picker.select', function (selectedVal, selectedIndex) {
@@ -44,11 +40,11 @@ picker.on('picker.select', function (selectedVal, selectedIndex) {
   var text2 = second[selectedIndex[1]].text;
   var text3 = third[selectedIndex[2]] ? third[selectedIndex[2]].text : '';
 
-  nameEl.innerText = text1 + ' ' + text2 + ' ' + text3;
+	nameEl.innerText = text1 + ' ' + text2 + ' ' + text3;
 });
 
 picker.on('picker.change', function (index, selectedIndex) {
-  if (index === 0) {
+  if (index === 0){
     firstChange();
   } else if (index === 1) {
     secondChange();
@@ -67,7 +63,7 @@ picker.on('picker.change', function (index, selectedIndex) {
       checked[1] = 0;
       checked[2] = 0;
     }
-
+    
     var secondCity = city[selectedIndex].sub[0]
     if (secondCity.hasOwnProperty('sub')) {
       creatList(secondCity.sub, third);
@@ -77,6 +73,8 @@ picker.on('picker.change', function (index, selectedIndex) {
     }
     picker.refillColumn(1, second);
     picker.refillColumn(2, third);
+    picker.scrollColumn(1, 0)
+    picker.scrollColumn(2, 0)
   }
 
   function secondChange() {
@@ -87,10 +85,12 @@ picker.on('picker.change', function (index, selectedIndex) {
       var secondCity = city[first_index].sub[selectedIndex];
       creatList(secondCity.sub, third);
       picker.refillColumn(2, third);
+      picker.scrollColumn(2, 0)
     } else {
       third = [{text: '', value: 0}];
       checked[2] = 0;
       picker.refillColumn(2, third);
+      picker.scrollColumn(2, 0)
     }
   }
 
@@ -102,7 +102,7 @@ picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
 });
 
 nameEl.addEventListener('click', function () {
-  picker.show();
+	picker.show();
 });
 
 
