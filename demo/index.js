@@ -6,19 +6,28 @@ var third = []; /* 镇 */
 
 var checked = [0, 0, 0]; /* 已选选项 */
 
-city.forEach(function(item, index, arr){
+function creatList(obj, list){
+  obj.forEach(function(item, index, arr){
   var temp = new Object();
   temp.text = item.name;
-  temp.value = index
-  first.push(temp)
-})
+  temp.value = index;
+  list.push(temp);
+  })
+}
 
-city[0].sub.forEach(function(item, index, arr){
-  var temp = new Object();
-  temp.text = item.name;
-  temp.value = index
-  second.push(temp)
-})
+creatList(city, first);
+
+if (city[0].hasOwnProperty('sub')) {
+  creatList(city[0].sub, second);
+} else {
+  second = [{text: '', value: 0}];
+}
+
+if (city[0].sub[0].hasOwnProperty('sub')) {
+  creatList(city[0].sub[0].sub, third);
+} else {
+  third = [{text: '', value: 0}];
+}
 
 var picker = new Picker({
 	data: [first, second, third],
@@ -38,22 +47,32 @@ picker.on('picker.change', function (index, selectedIndex) {
   if (index === 0){
     firstChange();
   } else if (index === 1) {
-    secondChange()
+    secondChange();
   }
 
   function firstChange() {
     second = [];
     third = [];
     checked[0] = selectedIndex;
-    var firstCity = city[selectedIndex]
-    firstCity.sub.forEach(function(item, index, arr){
-      var temp = new Object();
-      temp.text = item.name;
-      temp.value = index;
-      second.push(temp);
-    })
-    picker.refill(second, 1)
-    picker.refill(third, 2)
+    var firstCity = city[selectedIndex];
+    if (firstCity.hasOwnProperty('sub')) {
+      creatList(firstCity.sub, second);
+    } else {
+      second = [{text: '', value: 0}];
+      third = [{text: '', value: 0}];
+      checked[1] = 0;
+      checked[2] = 0;
+    }
+    
+    var secondCity = city[selectedIndex].sub[0]
+    if (secondCity.hasOwnProperty('sub')) {
+      creatList(secondCity.sub, third);
+    } else {
+      third = [{text: '', value: 0}];
+      checked[2] = 0;
+    }
+    picker.refill(second, 1);
+    picker.refill(third, 2);
   }
 
   function secondChange() {
@@ -61,25 +80,21 @@ picker.on('picker.change', function (index, selectedIndex) {
     checked[1] = selectedIndex;
     var first_index = checked[0];
     if (city[first_index].sub[selectedIndex].hasOwnProperty('sub')) {
-      var secondCity = city[first_index].sub[selectedIndex]
-      secondCity.sub.forEach(function(item, index, arr){
-        var temp = new Object();
-        temp.text = item.name;
-        temp.value = index;
-        third.push(temp);
-      })
-      picker.refill(third, 2)
+      var secondCity = city[first_index].sub[selectedIndex];
+      creatList(secondCity.sub, third);
+      picker.refill(third, 2);
     } else {
-      third = [''];
+      third = [{text: '', value: 0}];
       checked[2] = 0;
-      picker.refill(third, 2)
+      picker.refill(third, 2);
     }
   }
 
 });
 
 picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
-
+  console.log(selectedVal);
+  console.log(selectedIndex);
 });
 
 nameEl.addEventListener('click', function () {
