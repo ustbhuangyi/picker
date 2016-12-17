@@ -9,6 +9,11 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
   <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  <style>
+  #more-projects {
+    padding-top: 40px;
+  }
+  </style>
 </head>
 <body>
 <section class="page-header">
@@ -37,6 +42,20 @@
 
   <div id="picker4">每次点击数据源变化</div>
 
+  <h3>城市三级连动</h3>
+
+  <div id="picker5">每次点击重绘下一级城市列表</div>
+  
+  <div id="more-projects">
+    <h3>更多优秀项目推荐</h3>
+    <ul>
+      <li>
+        <a href="https://ustbhuangyi.github.io/picker" target="_blank">picker</a>
+        <span> - h5 picker inspired by ios UIPickerView</span>
+      </li>
+    </ul>
+  </div>
+
   <footer class="site-footer">
     <span class="site-footer-owner"><a href="https://github.com/ustbhuangyi/picker">Picker</a> is maintained by <a
         href="https://github.com/ustbhuangyi">ustbhuangyi</a>.</span>
@@ -51,6 +70,7 @@
 </body>
 <script src="http://img6.didistatic.com/static/tms/cdn/z/zepto/zepto/1.1.4/zepto.min.js"></script>
 <script src="scripts/picker.min.js"></script>
+<script src="scripts/city.js"></script>
 <script>
   var data1 = [
     {
@@ -176,7 +196,9 @@
   var picker2El = document.getElementById('picker2');
   var picker3El = document.getElementById('picker3');
   var picker4El = document.getElementById('picker4');
+  var picker5EL = document.getElementById('picker5')
 
+  /* Demo1 start */
   var picker1 = new Picker({
     data: [data1]
   });
@@ -193,6 +215,11 @@
     console.log(selectedVal);
   });
 
+  picker1El.addEventListener('click', function () {
+    picker1.show();
+  });
+
+  /* Demo2 Start */
   var picker2 = new Picker({
     data: [data1, data2]
   });
@@ -209,6 +236,11 @@
     console.log(selectedVal);
   });
 
+  picker2El.addEventListener('click', function () {
+    picker2.show();
+  });
+
+  /* Demo3 start */
   var picker3 = new Picker({
     title: '我们都爱打dota',
     data: [data1, data2, data3]
@@ -226,18 +258,11 @@
     console.log(selectedVal);
   });
 
-  picker1El.addEventListener('click', function () {
-    picker1.show();
-  });
-
-  picker2El.addEventListener('click', function () {
-    picker2.show();
-  });
-
   picker3El.addEventListener('click', function () {
     picker3.show();
   });
 
+  /* Demo4 start */
   var data = [data1, data2, data3];
   var index = 0;
 
@@ -263,6 +288,115 @@
     picker4.show(function () {
       picker4.refill(data[index], 0);
     });
+  });
+
+  /* Demo5 start */
+  var picker5EL = document.getElementById('picker5');
+
+  var first = []; /* 省，直辖市 */
+  var second = []; /* 市 */
+  var third = []; /* 镇 */
+
+  var checked = [0, 0, 0]; /* 已选选项 */
+
+  function creatList(obj, list){
+    obj.forEach(function(item, index, arr){
+    var temp = new Object();
+    temp.text = item.name;
+    temp.value = index;
+    list.push(temp);
+    })
+  }
+
+  creatList(city, first);
+
+  if (city[0].hasOwnProperty('sub')) {
+    creatList(city[0].sub, second);
+  } else {
+    second = [{text: '', value: 0}];
+  }
+
+  if (city[0].sub[0].hasOwnProperty('sub')) {
+    creatList(city[0].sub[0].sub, third);
+  } else {
+    third = [{text: '', value: 0}];
+  }
+
+  var picker5 = new Picker({
+    data: [first, second, third],
+    selectedIndex: [0, 0, 0],
+    title: '地址选择'
+  });
+
+  picker5.on('picker.select', function (selectedVal, selectedIndex) {
+    var text1 = first[selectedIndex[0]].text;
+    var text2 = second[selectedIndex[1]].text;
+    var text3 = third[selectedIndex[2]] ? third[selectedIndex[2]].text : '';
+
+    picker5EL.innerText = text1 + ' ' + text2 + ' ' + text3;
+  });
+
+  picker5.on('picker.change', function (index, selectedIndex) {
+    if (index === 0){
+      firstChange();
+    } else if (index === 1) {
+      secondChange();
+    }
+
+    function firstChange() {
+      second = [];
+      third = [];
+      checked[0] = selectedIndex;
+      var firstCity = city[selectedIndex];
+      if (firstCity.hasOwnProperty('sub')) {
+        creatList(firstCity.sub, second);
+        
+        var secondCity = city[selectedIndex].sub[0]
+        if (secondCity.hasOwnProperty('sub')) {
+          creatList(secondCity.sub, third);
+        } else {
+          third = [{text: '', value: 0}];
+          checked[2] = 0;
+        }
+      } else {
+        second = [{text: '', value: 0}];
+        third = [{text: '', value: 0}];
+        checked[1] = 0;
+        checked[2] = 0;
+      }
+      
+      picker5.refillColumn(1, second);
+      picker5.refillColumn(2, third);
+      picker5.scrollColumn(1, 0)
+      picker5.scrollColumn(2, 0)
+    }
+
+    function secondChange() {
+      third = [];
+      checked[1] = selectedIndex;
+      var first_index = checked[0];
+      if (city[first_index].sub[selectedIndex].hasOwnProperty('sub')) {
+        var secondCity = city[first_index].sub[selectedIndex];
+        creatList(secondCity.sub, third);
+        picker5.refillColumn(2, third);
+        picker5.scrollColumn(2, 0)
+      } else {
+        third = [{text: '', value: 0}];
+        checked[2] = 0;
+        picker5.refillColumn(2, third);
+        picker5.scrollColumn(2, 0)
+      }
+    }
+
+  });
+
+  picker5.on('picker.valuechange', function (selectedVal, selectedIndex) {
+    console.log(selectedVal);
+    console.log(selectedIndex);
+  });
+
+  picker5EL.addEventListener('click', function () {
+    picker5.show();
   });
 
 </script>
