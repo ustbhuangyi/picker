@@ -139,7 +139,7 @@ export default class Picker extends EventEmitter {
 
     window.setTimeout(() => {
       this.pickerEl.style.display = 'none';
-      for (let i = 0; i < this.length; i++) {
+      for (let i = 0; i < this.data.length; i++) {
         this.wheels[i].disable();
       }
     }, 500);
