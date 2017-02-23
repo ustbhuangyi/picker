@@ -1,4 +1,4 @@
-var nameEl = document.getElementById('picker5');
+var picker5El = document.getElementById('picker5');
 
 var first = []; /* 省，直辖市 */
 var second = []; /* 市 */
@@ -29,21 +29,21 @@ if (city[0].sub[0].hasOwnProperty('sub')) {
   third = [{text: '', value: 0}];
 }
 
-var picker = new Picker({
+var picker5 = new Picker({
 	data: [first, second, third],
 	selectedIndex: [0, 0, 0],
 	title: '地址选择'
 });
 
-picker.on('picker.select', function (selectedVal, selectedIndex) {
+picker5.on('picker.select', function (selectedVal, selectedIndex) {
   var text1 = first[selectedIndex[0]].text;
   var text2 = second[selectedIndex[1]].text;
   var text3 = third[selectedIndex[2]] ? third[selectedIndex[2]].text : '';
 
-	nameEl.innerText = text1 + ' ' + text2 + ' ' + text3;
+	picker5El.innerText = text1 + ' ' + text2 + ' ' + text3;
 });
 
-picker.on('picker.change', function (index, selectedIndex) {
+picker5.on('picker.change', function (index, selectedIndex) {
   if (index === 0){
     firstChange();
   } else if (index === 1) {
@@ -72,10 +72,10 @@ picker.on('picker.change', function (index, selectedIndex) {
       checked[2] = 0;
     }
     
-    picker.refillColumn(1, second);
-    picker.refillColumn(2, third);
-    picker.scrollColumn(1, 0)
-    picker.scrollColumn(2, 0)
+    picker5.refillColumn(1, second);
+    picker5.refillColumn(2, third);
+    picker5.scrollColumn(1, 0)
+    picker5.scrollColumn(2, 0)
   }
 
   function secondChange() {
@@ -85,25 +85,25 @@ picker.on('picker.change', function (index, selectedIndex) {
     if (city[first_index].sub[selectedIndex].hasOwnProperty('sub')) {
       var secondCity = city[first_index].sub[selectedIndex];
       creatList(secondCity.sub, third);
-      picker.refillColumn(2, third);
-      picker.scrollColumn(2, 0)
+      picker5.refillColumn(2, third);
+      picker5.scrollColumn(2, 0)
     } else {
       third = [{text: '', value: 0}];
       checked[2] = 0;
-      picker.refillColumn(2, third);
-      picker.scrollColumn(2, 0)
+      picker5.refillColumn(2, third);
+      picker5.scrollColumn(2, 0)
     }
   }
 
 });
 
-picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
+picker5.on('picker.valuechange', function (selectedVal, selectedIndex) {
   console.log(selectedVal);
   console.log(selectedIndex);
 });
 
-nameEl.addEventListener('click', function () {
-	picker.show();
+picker5El.addEventListener('click', function () {
+	picker5.show();
 });
 
 
