@@ -1,4 +1,4 @@
-var nameEl = document.getElementById('picker5');
+var nameEl = document.getElementById('chose');
 
 var first = []; /* 省，直辖市 */
 var second = []; /* 市 */
@@ -57,7 +57,7 @@ picker.on('picker.change', function (index, selectedIndex) {
     var firstCity = city[selectedIndex];
     if (firstCity.hasOwnProperty('sub')) {
       creatList(firstCity.sub, second);
-      
+
       var secondCity = city[selectedIndex].sub[0]
       if (secondCity.hasOwnProperty('sub')) {
         creatList(secondCity.sub, third);
@@ -71,7 +71,7 @@ picker.on('picker.change', function (index, selectedIndex) {
       checked[1] = 0;
       checked[2] = 0;
     }
-    
+
     picker.refillColumn(1, second);
     picker.refillColumn(2, third);
     picker.scrollColumn(1, 0)
