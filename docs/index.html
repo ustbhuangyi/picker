@@ -264,9 +264,11 @@
     index++;
     index = index % 3;
     picker4.show(function () {
-      picker4.refill(data[index], 0);
+      picker4.refill([data[index]]);
     });
   });
 
 </script>
+<script type="text/javascript" src="city/city.js"></script>
+<script type="text/javascript" src="city/index.js"></script>
 </html>

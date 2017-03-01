@@ -4,7 +4,7 @@ var first = []; /* 省，直辖市 */
 var second = []; /* 市 */
 var third = []; /* 镇 */
 
-var selectedIndex = [6, 2, 2]; /* 默认选中的地区 */
+var selectedIndex = [0, 0, 0]; /* 默认选中的地区 */
 
 var checked = [0, 0, 0]; /* 已选选项 */
 
