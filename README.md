@@ -1,4 +1,6 @@
 # picker
+[![npm](https://img.shields.io/npm/v/better-picker.svg?style=flat-square)](https://www.npmjs.com/package/better-picker)
+
 移动端最好用的的筛选器组件，高仿 ios 的 UIPickerView ，非常流畅的体验。
 
 ##Fetures##
@@ -12,6 +14,26 @@
 1.x 版本不再依赖任何 3 方库，原生 JS 实现，可以直接使用
 
 ##如何使用##
+
+### 通过npm引入 ###
+
+安装better-picker
+
+```shell
+npm install better-picker --save-dev
+```
+引入better-picker
+
+```javascript
+import Picker from 'better-picker'
+```
+
+>如果不支持import, 请使用
+
+```javascript
+var Picker = require('better-picker')
+```
+
 
 html 部分：
 
