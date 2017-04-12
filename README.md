@@ -147,7 +147,7 @@ JS 部分：
 
    
 
-###options
+### options
 options.title  (String)
 
 筛选器标题，默认为空。
@@ -160,7 +160,7 @@ options.selectedIndex (Array)
 
 筛选器初始化默认选择的数据索引，是一个二维数组，第一维表示列的序号，第二维表示每列的行号，从 0 开始。
 
-###事件
+### 事件
 picker.change
 
 当一列滚动停止的时候，会派发 picker.change 事件，同时会传递列序号 index 及滚动停止的位置 selectedIndex。
@@ -177,7 +177,7 @@ picker.valuechange
 
 当用户点击确定的时候，如果本次选择的数据和上一次不一致，会派发 picker.valuechange 事件，同时会传递每列选择的值数组 selectedVal 和每列选择的序号数组 selectedIndex。
 
-###编程接口
+### 编程接口
 show (next)
 
 显示筛选器，next 为筛选器显示后执行的回调函数。
@@ -198,7 +198,7 @@ scrollColumn(index, dist)
 
 复位某一列的默认选项，index为列序号，dist为选项的下标，起始值为0
 
-##如何构建
+## 如何构建
 picker的源码是基于webpack构建的
 
 首先，clone项目源码
